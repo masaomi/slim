@@ -1,0 +1,69 @@
+<!-- <h1>SLIM <span style="color:gray;font-size:medium">Smart Limidomics Interactive Manager</span></h1> -->
+<%= image_tag('slim_header_trans_50.png') %>
+<table class="pages_presentation">
+  <tr>
+    <td>
+      <h1>Master Table</h1>
+    </td>
+    <td class="page">
+      <h1><%= link_to 'LipidMaps', '/lipids', :method => :get %></h1>
+      <p>
+        Total: <%= session['lipid_count'] %> lipids
+        <%= button_to 'Clear', '/lipids/delete_all' %>
+      </p>
+    </td>
+    <td class="page">
+      <h1><%= link_to 'Import lipids', "/import_lipids" %></h1>
+      <p>
+        Import Lipidmaps data (.sdf)
+      </p>
+    </td>
+
+  </tr>
+  <tr>
+    <td>
+      <h1>Transaction Table1</h1>
+    </td>
+    <td class="page">
+      <h1><%= link_to 'Compound IDs', '/compounds', :method => :get %></h1>
+      <p>
+        Total: <%= session['compound_count'] %> compounds
+        <%= button_to 'Clear', '/compounds/delete_all' %>
+      </p>
+    </td>
+    <td class="page">
+      <h1><%= link_to 'Import Compound IDs', "/import_compounds" %></h1>
+      <p>
+        Import Progenesis Compound ID output (.csv)
+      </p>
+    </td>
+    <td class="page">
+      <h1><%= link_to 'Filter Compounds', "/compounds/filter" %></h1>
+      <p>
+        Filter Compounds <%= button_to 'Relative Order', '/compounds/relative_filter' %>
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h1>Transaction Table2</h1>
+    </td>
+    <td class="page">
+      <h1><%= link_to 'Compound Quantities', '/quants' %></h1>
+      <p>
+        Total: <%= session['quant_count'] %> quantities
+        <%= button_to 'Clear', '/quants/delete_all' %>
+      </p>
+    </td>
+    <td class="page">
+      <h1><%= link_to 'Import Compound Quantities', "/import_quants" %></h1>
+      <p>
+        Import Progenesis Compound quant output (.csv)
+      </p>
+    </td>
+  </tr>
+</table>
+<ol>
+  <li><a href="/slim-v0.1.1_20150723.tgz">Download source code ver.0.1.1</a></li>
+  <li><a href="SLIM_user_manual_ver0.1.1_20150723.docx">Download user manual ver.0.1.1</a></li>
+</ol>

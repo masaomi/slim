@@ -1,0 +1,6 @@
+<h3>Import Compound Quant DataSet</h3>
+<h4>File .csv selection</h4>
+<%= form_tag('/import_quants/import', :multipart => true, :method=>:post) do %>
+<%= file_field :file, :name %>
+<%= submit_tag 'load' %>
+<% end %>

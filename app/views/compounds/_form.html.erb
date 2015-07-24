@@ -1,0 +1,57 @@
+<%= form_for(@compound) do |f| %>
+  <% if @compound.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@compound.errors.count, "error") %> prohibited this compound from being saved:</h2>
+
+      <ul>
+      <% @compound.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :compound %><br>
+    <%= f.text_field :compound %>
+  </div>
+  <div class="field">
+    <%= f.label :compound_id %><br>
+    <%= f.text_field :compound_id %>
+  </div>
+  <div class="field">
+    <%= f.label :adducts %><br>
+    <%= f.text_field :adducts %>
+  </div>
+  <div class="field">
+    <%= f.label :score %><br>
+    <%= f.text_field :score %>
+  </div>
+  <div class="field">
+    <%= f.label :fragmentation_score %><br>
+    <%= f.text_field :fragmentation_score %>
+  </div>
+  <div class="field">
+    <%= f.label :mass_error %><br>
+    <%= f.text_field :mass_error %>
+  </div>
+  <div class="field">
+    <%= f.label :isotope_similarity %><br>
+    <%= f.text_field :isotope_similarity %>
+  </div>
+  <div class="field">
+    <%= f.label :retention_time %><br>
+    <%= f.text_field :retention_time %>
+  </div>
+  <div class="field">
+    <%= f.label :link %><br>
+    <%= f.text_field :link %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_field :description %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

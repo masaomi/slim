@@ -1,0 +1,99 @@
+<h1>Listing compounds</h1>
+<hr />
+Filtered by<br />
+Minimal Score: <%= @minimal_score %><br />
+Minimal Frag. Score: <%= @minimal_frag_score %><br />
+Minimal ISS: <%= @minimal_iss %><br />
+Minimal # of Adducts: <%= @minimal_n_adducts %><br />
+Category: <%= @category_name %><br />
+Oxidization filtering: <%= @oxidized_filtering %><br />
+Relative filtering: <%= @relative_order_flag %><br />
+<font color=red><%= @compounds.length %> compounds found in total <%= @compounds_count %> compounds</font> <br />
+<font color=red><%= @compounds.select{|c| !@compound2quants[c].empty?}.length %> compounds with quant found in total <%= @compounds.length %> compounds</font> (these are shown here)<br />
+<font color=red><%= @compounds.select{|c| @compound2lm_id[c]}.length %> compounds with lipid found in total <%= @compounds.length %> compounds</font> <br />
+<!--<font color=red><%= @compound2quants.values.flatten.compact.uniq.length %> quants found in <%= @compounds.length %> compounds</font><br />-->
+<%= form_tag(:controller => 'compounds',:action => 'save_as_csv') do %>
+  <%= hidden_field :minimal_score, :val, :value=>@minimal_score %>
+  <%= hidden_field :minimal_frag_score, :val, :value=>@minimal_frag_score %>
+  <%= hidden_field :minimal_iss, :val, :value=>@minimal_iss %>
+  <%= hidden_field :minimal_n_adducts, :val, :value=>@minimal_n_adducts %>
+  <%= hidden_field :category, :name, :value=>@category_name %>
+  <%= hidden_field :relative_order_flag, :val, :value=>@relative_order_flag %>
+  <%= hidden_field :oxidized_filtering, :val, :value=>@oxidized_filtering %>
+  <%= submit_tag 'save as csv' %>
+<% end %>
+<hr />
+<table>
+  <thead>
+    <tr>
+      <th>Index</th>
+      <th>Internal Compound ID</th>
+      <th>Compound</th>
+      <th>Compound ID (SID)</th>
+      <th>LM_ID</th>
+      <th>Oxidized</th>
+      <th>Sample</th>
+      <th>Raw</th>
+      <th>Norm</th>
+      <th>Adducts</th>
+      <th>Adducts Size</th>
+      <th>Score</th>
+      <th>Fragmentation score</th>
+<!--      <th>Mass error</th>-->
+      <th>Isotope similarity</th>
+<!--
+      <th>Retention time</th>
+      <th>Link</th>
+-->
+      <th>Description</th>
+      <th>Category1</th>
+      <th>Category2</th>
+      <th>Category3</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @count = 0 %>
+    <% @compounds.each_with_index do |compound, i| %>
+      <% @compound2quants[compound].each do |quant| %>
+        <% if quant %>
+      <tr>
+        <td rowspan=<%= eval(quant.samples).length %>><%= i+1 %></td>
+             <% eval(quant.samples).each do |sample_name, values| %>
+        <td><%= compound.id %></td>
+        <td><%= compound.compound %></td>
+        <td><%= compound.sid %></td>
+        <td><%= @compound2lm_id[compound].to_s %></td>
+        <td><%= @compound2oxidized[compound].to_s %></td>
+        <td><%= sample_name %></td>
+        <td><%= values.first %></td>
+        <td><%= values.last %></td>
+        <td><%= compound.adducts %></td>
+        <td><%= compound.adducts_size %></td>
+        <td><%= compound.score %></td>
+        <td><%= compound.fragmentation_score %></td>
+<!--        <td><%= compound.mass_error %></td>-->
+        <td><%= compound.isotope_similarity %></td>
+<!--
+        <td><%= compound.retention_time %></td>
+        <td><%= link_to compound.link, compound.link, :target=>"_blank" %></td>
+-->
+        <td><%= compound.description %></td>
+        <td><%= @compound2category1[compound].to_s %></td>
+        <td><%= @compound2category2[compound].to_s %></td>
+        <td><%= @compound2category3[compound].to_s %></td>
+        <td><%= link_to 'Show', compound %></td>
+        <td><%= link_to 'Edit', edit_compound_path(compound) %></td>
+        <td><%= link_to 'Destroy', compound, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Compound', new_compound_path %>

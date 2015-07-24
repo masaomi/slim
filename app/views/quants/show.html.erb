@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Compound:</strong>
+  <%= link_to @quant.compound, "/compounds/#{Compound.find_by_compound(@quant.compound).id}" %>
+</p>
+
+<p>
+  <strong>Samples:</strong>
+  <%= @quant.samples %>
+</p>
+
+<%= link_to 'Edit', edit_quant_path(@quant) %> |
+<%= link_to 'Back', quants_path %>

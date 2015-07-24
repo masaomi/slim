@@ -1,0 +1,89 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Lm:</strong>
+  <%= @lipid.lm_id %>
+</p>
+
+<p>
+  <strong>Pubchem substane url:</strong>
+  <%= link_to @lipid.pubchem_substane_url, @lipid.pubchem_substane_url, :target=>"_blank" %>
+</p>
+
+<p>
+  <strong>Lipid maps cmpd url:</strong>
+  <%= link_to @lipid.lipid_maps_cmpd_url, @lipid.lipid_maps_cmpd_url, :target=>"_blank" %>
+</p>
+
+<p>
+  <strong>Common name:</strong>
+  <%= @lipid.common_name %>
+</p>
+
+<p>
+  <strong>Systematic name:</strong>
+  <%= @lipid.systematic_name %>
+</p>
+
+<p>
+  <strong>Synonyms:</strong>
+  <%= @lipid.synonyms %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @lipid.category_ %>
+</p>
+
+<p>
+  <strong>Main class:</strong>
+  <%= @lipid.main_class %>
+</p>
+
+<p>
+  <strong>Sub class:</strong>
+  <%= @lipid.sub_class %>
+</p>
+
+<p>
+  <strong>Exact mass:</strong>
+  <%= @lipid.exact_mass %>
+</p>
+
+<p>
+  <strong>Formula:</strong>
+  <%= @lipid.formula %>
+</p>
+
+<p>
+  <strong>Pubchem sid:</strong>
+  <%= @lipid.pubchem_sid %>
+</p>
+
+<p>
+  <strong>Pubchem cid:</strong>
+  <%= @lipid.pubchem_cid %>
+</p>
+
+<p>
+  <strong>Kegg:</strong>
+  <%= @lipid.kegg_id %>
+</p>
+
+<p>
+  <strong>Chebi:</strong>
+  <%= @lipid.chebi_id %>
+</p>
+
+<p>
+  <strong>Inchi key:</strong>
+  <%= @lipid.inchi_key %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @lipid.status %>
+</p>
+
+<%= link_to 'Edit', edit_lipid_path(@lipid) %> |
+<%= link_to 'Back', lipids_path %>
