@@ -1,44 +1,41 @@
 <!-- <h1>SLIM <span style="color:gray;font-size:medium">Smart Limidomics Interactive Manager</span></h1> -->
-<%= image_tag('slim_header_trans_50.png') %>
+<%= image_tag('slim_logo.png') %>
 <table class="pages_presentation">
   <tr>
-    <td>
-      <h1>Master Table</h1>
-    </td>
+    <td></td>
     <td class="page">
-      <h1><%= link_to 'LipidMaps', '/lipids', :method => :get %></h1>
+      <h1><%= link_to 'All Lipids', '/lipids', :method => :get %></h1>
       <p>
         Total: <%= session['lipid_count'] %> lipids
         <%= button_to 'Clear', '/lipids/delete_all' %>
       </p>
     </td>
     <td class="page">
-      <h1><%= link_to 'Import lipids', "/import_lipids" %></h1>
+      <h1><%= link_to 'Import lipid database', "/import_lipids" %></h1>
       <p>
-        Import Lipidmaps data (.sdf)
+        Import new lipid-data from a SDF-file (.sdf)
       </p>
     </td>
 
   </tr>
   <tr>
     <td>
-      <h1>Transaction Table1</h1>
     </td>
     <td class="page">
-      <h1><%= link_to 'Compound IDs', '/compounds', :method => :get %></h1>
+      <h1><%= link_to 'Identifications', '/compounds', :method => :get %></h1>
       <p>
-        Total: <%= session['compound_count'] %> compounds
+        Total: <%= session['compound_count'] %> compounds identified.
         <%= button_to 'Clear', '/compounds/delete_all' %>
       </p>
     </td>
     <td class="page">
-      <h1><%= link_to 'Import Compound IDs', "/import_compounds" %></h1>
+      <h1><%= link_to 'Import identifications', "/import_compounds" %></h1>
       <p>
         Import Progenesis Compound ID output (.csv)
       </p>
     </td>
     <td class="page">
-      <h1><%= link_to 'Filter Compounds', "/compounds/filter" %></h1>
+      <h1><%= link_to 'Get Output', "/compounds/filter" %></h1>
       <p>
         Filter Compounds <%= button_to 'Relative Order', '/compounds/relative_filter' %>
       </p>
@@ -46,24 +43,20 @@
   </tr>
   <tr>
     <td>
-      <h1>Transaction Table2</h1>
+      <p>Find the sourcecode and the manual on <a href="https://github.com/masaomi/slim">Github</a></p>
     </td>
     <td class="page">
-      <h1><%= link_to 'Compound Quantities', '/quants' %></h1>
+      <h1><%= link_to 'Quantifications', '/quants' %></h1>
       <p>
-        Total: <%= session['quant_count'] %> quantities
+        Total: <%= session['quant_count'] %> quantifications
         <%= button_to 'Clear', '/quants/delete_all' %>
       </p>
     </td>
     <td class="page">
-      <h1><%= link_to 'Import Compound Quantities', "/import_quants" %></h1>
+      <h1><%= link_to 'Import quantification', "/import_quants" %></h1>
       <p>
         Import Progenesis Compound quant output (.csv)
       </p>
     </td>
   </tr>
 </table>
-<ol>
-  <li><a href="/slim-v0.1.1_20150723.tgz">Download source code ver.0.1.1</a></li>
-  <li><a href="SLIM_user_manual_ver0.1.1_20150723.docx">Download user manual ver.0.1.1</a></li>
-</ol>
