@@ -17,6 +17,16 @@ class QuantsController < ApplicationController
            else
              @start + 100
            end
+    @headers = eval(@quants.take.samples).keys
+
+    @value_index = params[:normalized]
+    if @value_index.nil?
+      @value_index = 0
+    else
+      @value_index = 1
+    end
+
+
 =begin
     @samples_length = 0
     @quants.each do |quant|

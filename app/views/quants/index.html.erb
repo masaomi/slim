@@ -5,40 +5,26 @@ Total: <%= @quants_count %> quants
 <table>
   <thead>
     <tr>
-      <th>Index</th>
-      <th>Internal ID</th>
       <th>Compound</th>
-      <th>Compounds</th>
-      <th>Sample</th>
-      <th>Raw</th>
-      <th>Norm</th>
-      <th colspan="3"></th>
+      <% @headers.each do |header| %>
+              <th><%=header.gsub(/_/," ")%></th>
+      <% end %>
     </tr>
   </thead>
-
+  <style>.number {text-align:right}</style>
   <tbody>
     <% i=0 %>
-    <% @quants.each do |quant| %>
-      <% eval(quant.samples).each do |key, values| %>
+    <% @quants.each do |quant|
+        samples = eval(quant.samples)%>
       <tr>
-        <td><%= i+=1 %></td>
-        <td><%= quant.id %></td>
-        <td><%= link_to quant.compound, "/compounds/#{Compound.find_by_compound(quant.compound).id}" %></td>
-        <td><%= quant.compounds.map{|comp| link_to(comp.id, "/compounds/#{comp.id}")}.join(",").html_safe %></td>
-        <td><%= key %></td>
-        <td><%= values.first %></td>
-        <td><%= values.last %></td>
-        <td><%= link_to 'Show', quant %></td>
-        <td><%= link_to 'Edit', edit_quant_path(quant) %></td>
-        <td><%= link_to 'Destroy', quant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to quant.compound, feature_path(quant.compound) %></td>
+            <% eval(quant.samples).each do |key, values| %>
+            <td class="number"><%=values[@value_index]=="0" ? "-" : "%0.f"%values[@value_index]%></td>
+            <% end %>
       </tr>
       <% end %>
-      <!--        <td><%= quant.samples %></td> -->
-    <% end %>
   </tbody>
 </table>
 
 <%= paginate @quants %>
 <br>
-
-<%= link_to 'New Quant', new_quant_path %>

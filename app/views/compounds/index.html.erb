@@ -21,7 +21,7 @@ Total: <%= @compounds_count %> compounds (from <%= @start %> to <%= @end %>)
       <tr>
         <td><%= link_to compound.compound_id, compound_path(compound) %></td>
         <td><%= link_to compound.description, lipid_path(compound.lipid) %></td>
-        <td><%= compound.compound %></td>
+        <td><%= link_to compound.compound, feature_path(compound.compound) %></td>
         <td><%= "%02.1f"%compound.score %></td>
         <td><%= "%02.1f"%compound.fragmentation_score %></td>
         <td><%= "%.4f"%compound.mass_error %></td>
