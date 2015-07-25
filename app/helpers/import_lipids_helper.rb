@@ -7,7 +7,7 @@ module ImportLipidsHelper
     first_line = true
     category_names = {}
     molfile = ""
-    File.readlines(path).each do |line|
+    File.foreach(path).each do |line|
       if first_line
         if key.nil?
           key = 'LM_ID'
@@ -31,6 +31,11 @@ module ImportLipidsHelper
       end
       if line =~ /\$\$\$\$/
         count += 1
+        if count%1000==0
+          puts "Imported Lipid ##{count}"
+          Lipid.import lipids
+          lipids = []
+        end
         lipid = Lipid.new
         lipid.lm_id = data['LM_ID']
         lipid.molfile = molfile
