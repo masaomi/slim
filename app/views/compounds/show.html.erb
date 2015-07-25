@@ -1,20 +1,21 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Feature <%= @compound.compound %></h1>
+<h1>Result <%= @compound.compound_id %> for feature <%= link_to @compound.compound, feature_path(@compound.compound) %></h1>
 <hr />
-<p>
-  <strong>Compound-ID:</strong> <%= @compound.compound %><br />
-  <strong>Retention time:</strong> <%= @compound.retention_time %>
-  <%
-    if @compound.compound =~/\d+\.\d+_(\d+\.\d+)n/
-      %><br /><strong>Neutral mass:</strong> <%="%.4f"%$1%><%
-    end
-  %>
-</p>
+<strong>Search-result ID (internal):</strong> <%= @compound.compound_id %><br />
 
-<h3>Compound identification</h3>
+<h3>All feature identifications</h3>
 <table><tr><th>Result-ID</th><th>Lipid</th><th>Lipid mass</th><th>Score</th><th>Frag. score</th><th>Mass error</th><th>Isotope sim.</th></tr>
-<% Compound.where(compound: @compound.compound).each do |other_compound|%>
+  <tr style="background-color:#ff8888">
+    <td><%= link_to @compound.compound_id, compound_path(@compound) %></td>
+    <td><%= link_to @compound.description, lipid_path(@compound.lipid) %></td>
+    <td><%= @compound.lipid.exact_mass %></td>
+    <td><%= "%02.1f"%@compound.score %></td>
+    <td><%= "%02.1f"%@compound.fragmentation_score %></td>
+    <td><%= "%.4f"%@compound.mass_error %></td>
+    <td><%= "%02.4f"%@compound.isotope_similarity %></td>
+  </tr>
+<% Compound.where(compound: @compound.compound).where.not(id: @compound.id).each do |other_compound|%>
     <tr>
       <td><%= link_to other_compound.compound_id, compound_path(other_compound) %></td>
       <td><%= link_to other_compound.description, lipid_path(other_compound.lipid) %></td>
@@ -28,53 +29,7 @@
 <% end %>
 </table>
 
-<h3>Compound quantification</h3>
-
-<%
-   quant = Quant.where(compound: @compound.compound).take
-   if not quant.nil?
-%>
-    <table>
-      <tr><th>Sample</th><th>Raw value</th><th>Normalized value</th></tr>
-      <%
-         samples = eval(quant.samples)
-         raw_min = nil
-         raw_max = nil
-         norm_min = nil
-         norm_max = nil
-         samples.each do |key, values|
-           values[0] = values[0].to_i
-           values[1] = values[1].to_i
-           raw_min = values[0] if raw_min.nil? or values[0]<raw_min
-           raw_max = values[0] if raw_max.nil? or values[0]>raw_max
-           norm_min = values[1] if norm_min.nil? or values[1]<norm_min
-           norm_max = values[1] if norm_max.nil? or values[1]>norm_max
-         end
-         puts "Found raw_min = %.0f, raw_max = %.0f"%[raw_min,raw_max]
-
-         norm_max = norm_max-norm_min
-         raw_max = raw_max-raw_min
-         samples.each do |key, values|
-            values[0] = values[0].to_i
-            values[1] = values[1].to_i
-            raw = 255*(values[0]-raw_min)/raw_max
-            norm = 255*(values[1]-norm_min)/norm_max
-            %>
-            <tr><td><%=key%></td><td style="text-align:right;background-color:#<%="%02x%02x%02x"%[raw>127.5 ? (255-raw)*2 : 255,255-((127.5-raw).abs)*2,raw<127.5 ? raw*2 : 255] %>"><%="%.0f"%values[0]%></td><td style="text-align:right;background-color:#<%="%02x%02x%02x"%[norm>127.5 ? (255-norm)*2 : 255,255-((127.5-norm).abs)*2,norm<127.5 ? norm*2 : 255] %>"><%="%.0f"%values[1]%></td></tr>
-            <%
-         end
-      %>
-
-    </table>
-<%
-   else
-%>
-    <p>No quantification data found.</p>
-<%
-   end%>
-
 <hr />
-<strong>Search-result ID (internal):</strong> <%= @compound.compound_id %><br />
 
 <%= link_to 'Edit', edit_compound_path(@compound) %> |
 <%= link_to 'Back', compounds_path %>

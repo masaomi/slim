@@ -23,57 +23,49 @@ puts importSDF(sdf_path)
 puts "Time: #{"%.2f" % (Time.now - t0)} [s]"
 t0 = Time.now
 
-# Compound
+# Identifications
 count = 0
 count_lipid = 0
-compounds = []
-CSV.foreach(compound_csv_path, :headers=>true, :col_sep=>";") do |row|
-  record = {}
-  row.each do |key, value|
-    record[key.downcase.gsub(/\(.+\)/,'').strip.gsub(/\s/,'_')] = value
-  end
-
-  sid = if record['link'] =~ /sid=(\d+)/
-          $1
-        end
-  sid = sid.to_s
-  count += 1
-  compound = Compound.new
-  compound.compound = record['compound']
-  compound.compound_id = record['compound_id']
-  compound.adducts = record['adducts']
-  compound.adducts_size = record['adducts'].split(/,/).length
-  compound.score = record['score'].to_f
-  compound.fragmentation_score = record['fragmentation_score'].to_f
-  compound.mass_error = record['mass_error'].to_f
-  compound.isotope_similarity = record['isotope_similarity'].to_f
-  compound.retention_time = record['retention_time'].to_f
-  compound.sid = sid
-  compound.link = record['link']
-  compound.description = record['description']
-  #compound.save
-  compounds << compound
-end
-Compound.import compounds
-
-sid2lipid = {}
-Lipid.find_each do |lipid|
-  sid2lipid[lipid.pubchem_sid] ||= []
-  sid2lipid[lipid.pubchem_sid] << lipid
-end
 unlinked_compounds = 0
-Compound.find_each do |compound|
-  #if lipid = Lipid.find_by_pubchem_sid(compound.sid)
-  if lipids = sid2lipid[compound.sid] and lipid = lipids.first
-    count_lipid += 1
-    #compound.lipid = lipid
-    lipid.compounds << compound
-  else
-    compound.delete
-    unlinked_compounds += 1
-  end
+compounds = []
+header = nil
+CSV.foreach(compound_csv_path, :headers=>false, :col_sep=>";") do |row|
+    if header.nil?
+      i = -1
+      header = row.map {|v| i += 1 ;[v.downcase.gsub(/\(.+\)/,'').strip.gsub(/\s/,'_'),i] }
+      header = Hash[*header.flatten]
+      next
+    end
+    compound = Compound.new
+    compound.compound = row[header['compound']]
+    compound.compound_id = row[header['compound_id']]
+    compound.adducts = row[header['adducts']]
+    compound.adducts_size = compound.adducts.split(/,/).length
+    compound.score = row[header['score']].to_f
+    compound.fragmentation_score = row[header['fragmentation_score']].to_f
+    compound.mass_error = row[header['mass_error']].to_f
+    compound.isotope_similarity = row[header['isotope_similarity']].to_f
+    compound.link = row[header['link']]
+    compound.description = row[header['description']]
+    compound.sid = if row[header['link']] =~ /sid=(.+)$/
+            $1
+          else
+            row[header['link']]
+                   end
+    lipid = Lipid.where(pubchem_sid: compound.sid).take
+    if not lipid.nil?
+      compound.save
+      lipid.compounds << compound
+    else
+      compound.delete
+      unlinked_compounds += 1
+    end
+    count += 1
+    if count%1000==0
+      puts " ... imported Identification ##{count}"
+    end
 end
-puts "#{count} compounds imported, compounds with sid linked to lipids: #{count_lipid}, unlinked compounds deleted: #{unlinked_compounds}"
+puts "#{count} compounds imported, thereof compounds with sid unlinked to a lipid  deleted: #{unlinked_compounds}"
 puts "Time: #{"%.2f" % (Time.now - t0)} [s]"
 t0 = Time.now
 
@@ -88,6 +80,7 @@ end
 count = 0
 total = 0
 quants = []
+threads = []
 CSV.foreach(quant_csv_path, :headers=>true, :col_sep=>";") do |row|
   total += 1
   record = {}

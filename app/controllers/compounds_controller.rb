@@ -471,6 +471,33 @@ class CompoundsController < ApplicationController
     #render :text => 'delete_all'
   end
 
+  def feature
+    @compound = params[:feature]
+    @idents = Compound.where(compound: @compound)
+
+    quant = Quant.where(compound: @compound).take
+    @quants = nil
+
+    if not quant.nil?
+      @quants = eval(quant.samples)
+      @raw_min = nil
+      @raw_max = nil
+      @norm_min = nil
+      @norm_max = nil
+      @quants.each do |key, values|
+        values[0] = values[0].to_i
+        values[1] = values[1].to_i
+        @raw_min = values[0] if @raw_min.nil? or values[0]<@raw_min
+        @raw_max = values[0] if @raw_max.nil? or values[0]>@raw_max
+        @norm_min = values[1] if @norm_min.nil? or values[1]<@norm_min
+        @norm_max = values[1] if @norm_max.nil? or values[1]>@norm_max
+      end
+      @norm_max = @norm_max-@norm_min
+      @raw_max = @raw_max-@raw_min
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_compound

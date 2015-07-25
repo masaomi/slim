@@ -25,7 +25,7 @@ Rails.application.routes.draw do
       post :search_compounds
     end
   end
-
+  get 'feature/:feature' => 'compounds#feature',  as: :feature , feature: /\d+\.\d+_\d+\.\d+[\w\/%]+/
   resources :import_compounds, :only => [:index] do
     collection do
       post :import
