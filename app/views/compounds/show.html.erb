@@ -1,60 +1,38 @@
 <p id="notice"><%= notice %></p>
 
+<h1>Search result</h1>
+<hr />
 <p>
-  <strong>Compound:</strong>
-  <%= @compound.compound %>
+  <strong>Search-result ID (internal):</strong> <%= @compound.compound_id %><br />
+  <strong>Compound-ID:</strong> <%= @compound.compound %><br />
+  <strong>Lipid:</strong> <%= @compound.description %><br />
+  <strong>Lipid Pubchem-ID:</strong> <%= link_to @compound.sid, @compound.link, :target=>"_blank" %><br />
+  <strong>Retention time:</strong> <%= @compound.retention_time %><br />
 </p>
+<table style="width:400px"><tr><th>Identification characteristics</th><th>Value</th></tr>
+<tr><td>Adducts</td><td><%= @compound.adducts %></td></tr>
+<tr><td>Overal progenesis search score:</td><td><%= "%02.1f"%@compound.score %></td></tr>
+  <tr><td>Progenesis fragmentation score:</td><td> <%= "%02.1f"%@compound.fragmentation_score %></td></tr>
+  <tr><td>Mass error:</td><td><%= "%.4f"%@compound.mass_error %></td></tr>
+  <tr><td>Isotope similarity score:</td><td><%= "%02.4f"%@compound.isotope_similarity %></td></tr>
+</table>
 
-<p>
-  <strong>Compound:</strong>
-  <%= @compound.compound_id %>
-</p>
+<h3>Other search results for this compound</h3>
+<table><tr><th>Result-ID</th><th>Lipid</th><th>Score</th><th>Frag. score</th><th>Mass error</th><th>Isotope sim.</th></tr>
+  <tr style="background-color:#ff8888;font-weight:600"><td>This result</td><td><%= @compound.description %></td><td><%= "%02.1f"%@compound.score%></td><td><%= "%02.1f"%@compound.fragmentation_score%></td><td><%= "%.4f"%@compound.mass_error%></td><td><%= "%02.4f"%@compound.isotope_similarity%></td></tr>
+<% Compound.where(compound: @compound.compound).where.not(compound_id: @compound.compound_id).each do |other_compound|%>
+    <tr>
+      <td><%= link_to other_compound.compound_id, compound_path(other_compound) %></td>
+      <td><%= other_compound.description %></td>
+      <td><%= "%02.1f"%other_compound.score %></td>
+      <td><%= "%02.1f"%other_compound.fragmentation_score %></td>
+      <td><%= "%.4f"%other_compound.mass_error %></td>
+      <td><%= "%02.4f"%other_compound.isotope_similarity %></td>
+    </tr>
 
-<p>
-  <strong>Adducts:</strong>
-  <%= @compound.adducts %>
-</p>
+<% end %>
+</table>
 
-<p>
-  <strong>Score:</strong>
-  <%= @compound.score %>
-</p>
-
-<p>
-  <strong>Fragmentation score:</strong>
-  <%= @compound.fragmentation_score %>
-</p>
-
-<p>
-  <strong>Mass error:</strong>
-  <%= @compound.mass_error %>
-</p>
-
-<p>
-  <strong>Isotope similarity:</strong>
-  <%= @compound.isotope_similarity %>
-</p>
-
-<p>
-  <strong>Retention time:</strong>
-  <%= @compound.retention_time %>
-</p>
-
-<p>
-  <strong>SID:</strong>
-  <%= @compound.sid %>
-</p>
-
-
-<p>
-  <strong>Link:</strong>
-  <%= link_to @compound.link, @compound.link, :target=>"_blank" %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @compound.description %>
-</p>
 
 <%= link_to 'Edit', edit_compound_path(@compound) %> |
 <%= link_to 'Back', compounds_path %>
