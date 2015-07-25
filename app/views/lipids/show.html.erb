@@ -1,89 +1,70 @@
 <p id="notice"><%= notice %></p>
+<h1><%= @lipid.common_name %></h1> <hr />
 
+<h3>General info</h3>
 <p>
-  <strong>Lm:</strong>
-  <%= @lipid.lm_id %>
+  <strong>Lipidmaps-ID:</strong> <%= link_to @lipid.lm_id, @lipid.lipid_maps_cmpd_url,  :target=>"_blank" %><br />
+  <strong>Pubchem-ID:</strong> <%= link_to @lipid.pubchem_sid, @lipid.pubchem_substane_url, :target=>"_blank" %><br />
+  <strong>Systematic name:</strong> <%= @lipid.systematic_name %><br />
+  <strong>Synonyms:</strong> <%= @lipid.synonyms %> <br />
 </p>
+<p><strong>Oxidations:</strong> <%=@lipid.oxidations%><br />
+  <strong>Oxidation variant:</strong> <%=@lipid.oxvariant%><br /></p>
 
+<h3>Categorization</h3>
 <p>
-  <strong>Pubchem substane url:</strong>
-  <%= link_to @lipid.pubchem_substane_url, @lipid.pubchem_substane_url, :target=>"_blank" %>
-</p>
-
-<p>
-  <strong>Lipid maps cmpd url:</strong>
-  <%= link_to @lipid.lipid_maps_cmpd_url, @lipid.lipid_maps_cmpd_url, :target=>"_blank" %>
-</p>
-
-<p>
-  <strong>Common name:</strong>
-  <%= @lipid.common_name %>
-</p>
-
-<p>
-  <strong>Systematic name:</strong>
-  <%= @lipid.systematic_name %>
-</p>
-
-<p>
-  <strong>Synonyms:</strong>
-  <%= @lipid.synonyms %>
-</p>
-
-<p>
-  <strong>Category:</strong>
-  <%= @lipid.category_ %>
-</p>
-
-<p>
-  <strong>Main class:</strong>
-  <%= @lipid.main_class %>
-</p>
-
-<p>
-  <strong>Sub class:</strong>
-  <%= @lipid.sub_class %>
-</p>
-
-<p>
-  <strong>Exact mass:</strong>
-  <%= @lipid.exact_mass %>
-</p>
-
-<p>
-  <strong>Formula:</strong>
-  <%= @lipid.formula %>
-</p>
-
-<p>
-  <strong>Pubchem sid:</strong>
-  <%= @lipid.pubchem_sid %>
-</p>
-
-<p>
+  <strong>Category:</strong> <%= @lipid.category.name %>  <br />
+  <strong>Main class:</strong> <%= @lipid.main_class %><br />
+  <strong>Sub class:</strong> <%= @lipid.sub_class %><br />
   <strong>Pubchem cid:</strong>
   <%= @lipid.pubchem_cid %>
 </p>
 
+<h3>Additional information</h3>
 <p>
+  <strong>Exact mass:</strong>
+  <%= @lipid.exact_mass %> <br />
+  <strong>Formula:</strong>
+  <%= @lipid.formula %>           <br />
   <strong>Kegg:</strong>
-  <%= @lipid.kegg_id %>
-</p>
-
-<p>
+  <%= @lipid.kegg_id %>                 <br />
   <strong>Chebi:</strong>
-  <%= @lipid.chebi_id %>
-</p>
-
-<p>
+  <%= @lipid.chebi_id %>         <br />
   <strong>Inchi key:</strong>
-  <%= @lipid.inchi_key %>
-</p>
-
-<p>
+  <%= @lipid.inchi_key %>  <br />
   <strong>Status:</strong>
   <%= @lipid.status %>
 </p>
 
-<%= link_to 'Edit', edit_lipid_path(@lipid) %> |
-<%= link_to 'Back', lipids_path %>
+
+<h3>2D structure</h3>
+<canvas id="viewerCanvas" style="border:none"></canvas>
+<script>
+    //initialize component and set visual specifications
+    var viewerCanvas = new ChemDoodle.ViewerCanvas('viewerCanvas', 500, 200);
+    //the width of the bonds should be .6 pixels
+    viewerCanvas.specs.bonds_width_2D = .6;
+    //the spacing between higher order bond lines should be 18% of the length of the bond
+    viewerCanvas.specs.bonds_saturationWidth_2D = .13;
+    //the hashed wedge spacing should be 2.5 pixels
+    viewerCanvas.specs.bonds_hashSpacing_2D = 2.5;
+    //the atom label font size should be 10
+    viewerCanvas.specs.atoms_font_size_2D = 10;
+    //we define a cascade of acceptable font families
+    //if Helvetica is not found, Arial will be used
+    viewerCanvas.specs.atoms_font_families_2D = ["Helvetica", "Arial", "sans-serif"];
+    //display carbons labels if they are terminal
+    viewerCanvas.specs.atoms_displayTerminalCarbonLabels_2D = false;
+    viewerCanvas.specs.atoms_showHiddenCarbons_2D = true;
+    viewerCanvas.specs.atoms_usePYMOLColors = true;
+
+    //load data and read into a Molecule
+    var lipidMolFile = '<%=@lipid.molfile.gsub!(/[\r\n]+/, "\\n");%>';
+    var lipid = ChemDoodle.readMOL(lipidMolFile);
+    //the bond lengths should be 14.4 pixels in ACS Document 1996
+    lipid.scaleToAverageBondLength(18);
+
+    viewerCanvas.loadMolecule(lipid);
+</script>           <br />
+<%= link_to 'Edit this lipid', edit_lipid_path(@lipid) %> |
+<%= link_to 'Back to lipid list', lipids_path %>

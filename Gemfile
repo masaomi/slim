@@ -42,3 +42,4 @@ gem "chartkick"
 gem "kaminari"
 gem 'activerecord-import'
 gem 'nprogress-rails'
+gem 'passenger', '~> 5.0'

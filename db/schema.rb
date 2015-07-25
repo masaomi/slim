@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150331230511) do
+ActiveRecord::Schema.define(version: 20150725065624) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -30,11 +30,16 @@ ActiveRecord::Schema.define(version: 20150331230511) do
     t.float    "retention_time"
     t.string   "link"
     t.string   "description"
+    t.integer  "quant_id"
+    t.integer  "lipid_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "sid"
     t.integer  "adducts_size"
   end
+
+  add_index "compounds", ["lipid_id"], name: "index_compounds_on_lipid_id"
+  add_index "compounds", ["quant_id"], name: "index_compounds_on_quant_id"
 
   create_table "lipids", force: true do |t|
     t.string   "lm_id"
@@ -43,7 +48,7 @@ ActiveRecord::Schema.define(version: 20150331230511) do
     t.string   "common_name"
     t.string   "systematic_name"
     t.string   "synonyms"
-    t.string   "category"
+    t.string   "category_"
     t.string   "main_class"
     t.string   "sub_class"
     t.float    "exact_mass"
@@ -54,9 +59,16 @@ ActiveRecord::Schema.define(version: 20150331230511) do
     t.string   "chebi_id"
     t.string   "inchi_key"
     t.string   "status"
+    t.integer  "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "oxidations"
+    t.integer  "oxvariant"
+    t.string   "parent"
+    t.string   "molfile"
   end
+
+  add_index "lipids", ["category_id"], name: "index_lipids_on_category_id"
 
   create_table "quants", force: true do |t|
     t.string   "compound"

@@ -6,6 +6,7 @@ module ImportLipidsHelper
     lipids = []
     first_line = true
     category_names = {}
+    molfile = ""
     File.readlines(path).each do |line|
       if first_line
         if key.nil?
@@ -13,11 +14,11 @@ module ImportLipidsHelper
           data[key] = line.chomp
           molfile = ""
         end
-        molfile = molfile.concat(line) #without chomp, we need the newline.
         if line =~ /\<.+\>/
           first_line = false
           key = nil
         else
+          molfile = molfile.concat(line) #without chomp, we need the newline.
           next
         end
       end

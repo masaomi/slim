@@ -20,7 +20,6 @@ quant_csv_path = "sample_data/COMPOUND_quantities.csv"
 t0 = Time.now
 include ImportLipidsHelper
 puts importSDF(sdf_path)
-puts "#{count} lipids imported, #{categories.length} categories imported"
 puts "Time: #{"%.2f" % (Time.now - t0)} [s]"
 t0 = Time.now
 
