@@ -1,0 +1,30 @@
+<h3>Filtering criteria</h3>
+<table style="border: 1px solid #000; width: 350px">
+  <tr>
+    <th>absolute criterium</th>
+    <th>minimal required value</th>
+  </tr>
+  <% ['score','fragmentation_score','isotope_similarity','mass_error','adducts'].each do |crit| %>
+     <tr>
+       <td><%=crit.gsub(/_/," ")%></td>
+       <td><%="%.4f"%@criteria.minimal[crit]%></td>
+     </tr>
+  <% end %>
+  <tr><th>relative criterium</th><th>priority</th></tr>
+  <% @criteria.relative.each_with_index do |crit, prio| %>
+  <tr>
+    <td><%=crit.to_s.gsub(/_/," ")%></td>
+    <td><%=prio+1%>.</td>
+  </tr>
+  <% end %>
+  <tr><th>oxidation chain</th><th><%= if @criteria.oxichain===false
+                                        'no'
+                                      else
+                                         if @criteria.oxichain.nil?
+                                           'yes'
+                                         else
+                                           'yes: %i parental lipids'%@criteria.oxichain.count
+                                         end
+                                      end %></th></tr>
+</table>
+<p><%=link_to 'Change filtering criteria', 'filter' %></p>

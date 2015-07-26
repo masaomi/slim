@@ -35,9 +35,9 @@
       </p>
     </td>
     <td class="page">
-      <h1><%= link_to 'Get Output', "/compounds/filter" %></h1>
+      <h1><%= link_to 'Set Filtering', "/compounds/filter" %></h1>
       <p>
-        Filter Compounds <%= button_to 'Relative Order', '/compounds/relative_filter' %>
+        Define Filtering order
       </p>
     </td>
   </tr>
@@ -56,6 +56,12 @@
       <h1><%= link_to 'Import quantification', "/import_quants" %></h1>
       <p>
         Import Progenesis Compound quant output (.csv)
+      </p>
+    </td>
+    <td class="page">
+      <h1><%= link_to 'Get filtering output', "/compounds/filter_view" %></h1>
+      <p>
+       <%= button_to 'download as .csv', '/compounds/save_as_csv' %>
       </p>
     </td>
   </tr>

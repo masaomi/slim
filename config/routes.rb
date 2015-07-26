@@ -16,12 +16,10 @@ Rails.application.routes.draw do
   resources :compounds do
     collection do
       get :filter
-      post :relative_filter
-      post :relative_filter_reset
-      post :save_relative_filter
-      post :filter_view
-      post :delete_all
+      post :filter
+      get :filter_view
       post :save_as_csv
+      post :delete_all
       post :search_compounds
     end
   end

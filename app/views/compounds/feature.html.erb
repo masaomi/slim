@@ -5,10 +5,10 @@
 <p>
   <%
      if @compound =~/(\d+\.\d+)_(\d+\.\d+)n/
-  %><br /><strong>Retention time:</strong> <%=(@idents.count ? "%.6f"%@idents.take.retention_time : "%.2f"%$1)%><br /><strong>Neutral mass:</strong> <%="%.4f"%$2%>
+  %><br /><strong>Retention time:</strong> <%="%.2f"%$1%><br /><strong>Neutral mass:</strong> <%="%.4f"%$2%>
   <% end
      if @compound =~/(\d+\.\d+)_(\d+\.\d+)m\/z/
-  %><br /><strong>Retention time:</strong> <%=(@idents.count ? "%.6f"%@idents.take.retention_time : "%.2f"%$1)%><br /><strong>Mass:</strong> <%="%.4f"%$2%> m/z
+  %><br /><strong>Retention time:</strong> <%="%.2f"%$1%><br /><strong>Mass:</strong> <%="%.4f"%$2%> m/z
   <% end %>
 </p>
 
