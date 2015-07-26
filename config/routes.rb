@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get 'filter/edit'
+  post 'filter/edit'
+  get 'filter/list'
+  get 'filter/csv'
+  post 'filter/csv'
+
   get 'features' => 'features#index'
 
   get 'features/show/:feature' => 'features#show', as: :feature, id: :number

@@ -18,7 +18,7 @@ class FeaturesController < ApplicationController
        @idents[feature.id] = 0
     end
     ActiveRecord::Base.connection.execute('SELECT feature_id FROM identifications WHERE feature_id IN (%s)'%@idents.keys.join(",")).each do |id|
-       @idents[id] += 1
+      @idents[id[0].to_i] += 1
     end
 
 

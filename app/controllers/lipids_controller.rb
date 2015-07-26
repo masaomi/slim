@@ -26,6 +26,9 @@ class LipidsController < ApplicationController
   # GET /lipids/1
   # GET /lipids/1.json
   def show
+    if @lipid.parent != @lipid.lm_id
+      @parent = Lipid.where(lm_id: @lipid.parent).take
+    end
   end
 
   # GET /lipids/new

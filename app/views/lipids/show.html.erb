@@ -11,11 +11,13 @@
 </p>
 <p class="text-danger"><strong>Oxidations:</strong> <%=@lipid.oxidations%><br />
   <strong>Oxidation variant:</strong> <%=@lipid.oxvariant%><br /></p>
+    <% unless @parent.nil? %>
+    <p>Parent lipid: <%= link_to @parent.common_name, @parent%></p>
+    <% end %>
 </div></div>
 <div class="panel panel-default">
   <div class="panel-heading"><h3 class="panel-title">Categorization</h3></div>
   <div class="panel-body"><p>
-  <strong>Category:</strong> <%= @lipid.category.name %>  <br />
   <strong>Main class:</strong> <%= @lipid.main_class %><br />
   <strong>Sub class:</strong> <%= @lipid.sub_class %><br />
   <strong>Pubchem cid:</strong>
