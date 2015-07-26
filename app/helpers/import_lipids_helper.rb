@@ -61,7 +61,7 @@ module ImportLipidsHelper
         lipid.sub_class = data['SUB_CLASS']
         lipid.exact_mass = data['EXACT_MASS']
         lipid.formula = data['FORMULA']
-        lipid.pubchem_sid = data['PUBCHEM_SID']
+        lipid.pubchem_sid = data['PUBCHEM_SID'].to_i
         lipid.pubchem_cid = data['PUBCHEM_CID']
         lipid.kegg_id = data['KEGG_ID']
         lipid.chebi_id = data['CHEBI_ID']

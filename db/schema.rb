@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150725065624) do
+ActiveRecord::Schema.define(version: 20150726154957) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -23,11 +23,11 @@ ActiveRecord::Schema.define(version: 20150725065624) do
     t.string   "compound"
     t.string   "compound_id"
     t.string   "adducts"
-    t.float    "score"
-    t.float    "fragmentation_score"
-    t.float    "mass_error"
-    t.float    "isotope_similarity"
-    t.float    "retention_time"
+    t.float    "score",               limit: 24
+    t.float    "fragmentation_score", limit: 24
+    t.float    "mass_error",          limit: 24
+    t.float    "isotope_similarity",  limit: 24
+    t.float    "retention_time",      limit: 24
     t.string   "link"
     t.string   "description"
     t.integer  "quant_id"
@@ -38,22 +38,48 @@ ActiveRecord::Schema.define(version: 20150725065624) do
     t.integer  "adducts_size"
   end
 
-  add_index "compounds", ["lipid_id"], name: "index_compounds_on_lipid_id"
-  add_index "compounds", ["quant_id"], name: "index_compounds_on_quant_id"
+  add_index "compounds", ["compound"], name: "index_compounds_on_compound", using: :btree
+  add_index "compounds", ["lipid_id"], name: "index_compounds_on_lipid_id", using: :btree
+  add_index "compounds", ["quant_id"], name: "index_compounds_on_quant_id", using: :btree
+
+  create_table "features", force: true do |t|
+    t.float    "rt",         limit: 24
+    t.float    "m_z",        limit: 24
+    t.float    "mass",       limit: 24
+    t.integer  "charge"
+    t.string   "id_string"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "features", ["id_string"], name: "index_features_on_id_string", using: :btree
+
+  create_table "identifications", force: true do |t|
+    t.integer  "feature_id"
+    t.integer  "lipid_id"
+    t.float    "fragmentation_score", limit: 24
+    t.float    "score",               limit: 24
+    t.float    "isotope_similarity",  limit: 24
+    t.integer  "adducts"
+    t.integer  "priority"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "mass_error",          limit: 24
+  end
 
   create_table "lipids", force: true do |t|
     t.string   "lm_id"
     t.string   "pubchem_substane_url"
     t.string   "lipid_maps_cmpd_url"
     t.string   "common_name"
-    t.string   "systematic_name"
-    t.string   "synonyms"
+    t.text     "systematic_name",      limit: 2147483647
+    t.text     "synonyms",             limit: 2147483647
     t.string   "category_"
     t.string   "main_class"
     t.string   "sub_class"
-    t.float    "exact_mass"
+    t.float    "exact_mass",           limit: 24
     t.string   "formula"
-    t.string   "pubchem_sid"
+    t.integer  "pubchem_sid",          limit: 8
     t.string   "pubchem_cid"
     t.string   "kegg_id"
     t.string   "chebi_id"
@@ -65,14 +91,32 @@ ActiveRecord::Schema.define(version: 20150725065624) do
     t.integer  "oxidations"
     t.integer  "oxvariant"
     t.string   "parent"
-    t.string   "molfile"
+    t.text     "molfile",              limit: 2147483647
   end
 
-  add_index "lipids", ["category_id"], name: "index_lipids_on_category_id"
+  add_index "lipids", ["category_id"], name: "index_lipids_on_category_id", using: :btree
+  add_index "lipids", ["pubchem_sid"], name: "index_lipids_on_pubchem_sid", using: :btree
+  add_index "lipids", ["pubchem_sid"], name: "pubchem_sid", using: :btree
+
+  create_table "quantifications", force: true do |t|
+    t.integer  "feature_id"
+    t.integer  "sample_id"
+    t.float    "norm",       limit: 24
+    t.float    "raw",        limit: 24
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "quants", force: true do |t|
     t.string   "compound"
-    t.string   "samples"
+    t.text     "samples",    limit: 2147483647
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "samples", force: true do |t|
+    t.text     "id_string",  limit: 2147483647
+    t.string   "short"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

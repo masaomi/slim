@@ -28,7 +28,7 @@ module ImportCompoundsHelper
                      else
                        row[header['link']]
                      end
-      lipid = Lipid.where(pubchem_sid: compound.sid).take
+      lipid = Lipid.where(pubchem_sid: compound.sid.to_i).take
       if not lipid.nil?
         compound.save
         lipid.compounds << compound

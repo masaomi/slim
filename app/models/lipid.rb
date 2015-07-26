@@ -1,5 +1,5 @@
 class Lipid < ActiveRecord::Base
-  paginates_per 100
-  has_many :compounds
-  belongs_to :category
+  paginates_per 300
+  has_many :identifications
+  #belongs_to :category
 end

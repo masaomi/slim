@@ -145,7 +145,11 @@ class CompoundsController < ApplicationController
     @criteria = FilteringCriteria.new(session)
     @results = filteredCompounds(@criteria)
     @headers = @results.first
-    @headers = eval(@headers.quant.samples).keys if not @headers.nil? and @headers.quant.samples
+    if not @headers.nil? and not @headers.quant.nil? and @headers.quant.samples
+      @headers = eval(@headers.quant.samples).keys
+    else
+      @headers = []
+    end
     @headers = [] if @headers.nil?
     @criteria.save(session)
   end

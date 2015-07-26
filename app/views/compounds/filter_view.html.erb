@@ -35,7 +35,7 @@
     <td><%= link_to feature.compound, feature_path(feature.compound) %></td>
     <td><%= link_to feature.lipid.common_name, lipid_path(feature.lipid) %></td>
     <td><%= Compound.where(compound: feature.compound).count %></td>
-    <% quant = eval(feature.quant.samples)
+    <% quant = eval(feature.quant.samples) if not feature.quant.nil?
        quant = {} if quant.nil?
        quant.each do |key, value| %>
     <td><%="%.0f"%value[0]%></td>
