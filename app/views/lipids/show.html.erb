@@ -1,27 +1,31 @@
-<p id="notice"><%= notice %></p>
-<h1><%= @lipid.common_name %></h1> <hr />
+<% if notice %><div class="alert alert-info"><%= notice %></div><% end %>
+<h1 class="page-header"><%= @lipid.common_name %></h1>
 
-<h3>General info</h3>
-<p>
+<div class="panel panel-info">
+  <div class="panel-heading"><h3 class="panel-title">General info</h3></div>
+  <div class="panel-body"><p>
   <strong>Lipidmaps-ID:</strong> <%= link_to @lipid.lm_id, @lipid.lipid_maps_cmpd_url,  :target=>"_blank" %><br />
   <strong>Pubchem-ID:</strong> <%= link_to @lipid.pubchem_sid, @lipid.pubchem_substane_url, :target=>"_blank" %><br />
   <strong>Systematic name:</strong> <%= @lipid.systematic_name %><br />
   <strong>Synonyms:</strong> <%= @lipid.synonyms %> <br />
 </p>
-<p><strong>Oxidations:</strong> <%=@lipid.oxidations%><br />
+<p class="text-danger"><strong>Oxidations:</strong> <%=@lipid.oxidations%><br />
   <strong>Oxidation variant:</strong> <%=@lipid.oxvariant%><br /></p>
-
-<h3>Categorization</h3>
-<p>
+</div></div>
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Categorization</h3></div>
+  <div class="panel-body"><p>
   <strong>Category:</strong> <%= @lipid.category.name %>  <br />
   <strong>Main class:</strong> <%= @lipid.main_class %><br />
   <strong>Sub class:</strong> <%= @lipid.sub_class %><br />
   <strong>Pubchem cid:</strong>
   <%= @lipid.pubchem_cid %>
-</p>
+</p></div></div>
 
-<h3>Additional information</h3>
-<p>
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Additional information</h3></div>
+  <div class="panel-body">
+  <p>
   <strong>Exact mass:</strong>
   <%= @lipid.exact_mass %> <br />
   <strong>Formula:</strong>
@@ -35,10 +39,12 @@
   <strong>Status:</strong>
   <%= @lipid.status %>
 </p>
+    </div></div>
 
-
-<h3>2D structure</h3>
-<canvas id="viewerCanvas" style="border:none"></canvas>
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">2D-structure</h3></div>
+  <div class="panel-body"><canvas id="viewerCanvas" style="border:none"></canvas></div>
+</div>
 <script>
     //initialize component and set visual specifications
     var viewerCanvas = new ChemDoodle.ViewerCanvas('viewerCanvas', 500, 200);

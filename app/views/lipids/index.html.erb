@@ -1,9 +1,9 @@
-<h1>Listing lipids</h1>
+<h1 class="page-header">Listing lipids</h1>
 Total: <%= @lipids_count %> lipids (from <%= @start %> to <%= @end %>)
 <br />
 <%= paginate @lipids %>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Lipidmaps ID</th>
@@ -21,7 +21,7 @@ Total: <%= @lipids_count %> lipids (from <%= @start %> to <%= @end %>)
         <td><%= lipid.common_name %></td>
         <td><%= lipid.category.name %></td>
         <td><%= lipid.sub_class =~ /\[(.+)\]/ ? $1 : lipid.sub_class %></td>
-        <td style="<%= lipid.oxidations>0 ? 'color: red' : 'color: black' %>"><%= lipid.oxidations %> / <%=lipid.oxvariant%></td>
+        <td class="<%= lipid.oxidations>0 ? 'text-danger' : 'text-muted' %>"><%= lipid.oxidations %> / <%=lipid.oxvariant%></td>
       </tr>
     <% end %>
   </tbody>

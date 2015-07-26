@@ -2,17 +2,17 @@
 <hr />
 <%=render file: 'compounds/show_filtering_criteria'%>
 
-<p></p><font color=red>filtered <%= @results.length %> lipids (<%="%02.1f"%(100*@results.length/Compound.count) %>%) out of  <%= Compound.count %> identifications.</font></p>
+<p class="text-warning">filtered <%= @results.length %> lipids (<%="%02.1f"%(100*@results.length/Compound.count) %>%) out of  <%= Compound.count %> identifications.</p>
 <%= form_tag(:controller => 'compounds',:action => 'save_as_csv') do %>
   <%= button_to 'save as csv' %>
 <% end %>
 <hr />
-<table>
+<table class="table table-condensed table-striped">
   <thead>
     <tr>
         <th colspan="4"></th>
-        <th colspan="<%=@headers.count%>" style="background-color: #ff8888">Raw Values</th>
-        <th colspan="<%=@headers.count%>" style="background-color: #88ff88">Normalized Values</th>
+        <th colspan="<%=@headers.count%>" class="bg-warning">Raw Values</th>
+        <th colspan="<%=@headers.count%>" class="bg-info">Normalized Values</th>
     </tr>
     <tr>
       <th>Identification</th>
@@ -20,10 +20,10 @@
       <th>Lipid</th>
       <th># Ident</th>
       <% @headers.each do |header| %>
-      <th style="background-color: #ff8888"><%=header.gsub(/_/,' ')%></th>
+      <th class="bg-warning"><%=header.gsub(/_/,' ')%></th>
       <% end %>
       <% @headers.each do |header| %>
-          <th style="background-color: #88ff88"><%=header.gsub(/_/,' ')%></th>
+          <th class="bg-info"><%=header.gsub(/_/,' ')%></th>
       <% end %>
     </tr>
   </thead>

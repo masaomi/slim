@@ -1,7 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Feature <%= @compound %></h1>
-<hr />
+<h1 class="page-header">Feature <%= @compound %></h1>
 <p>
   <%
      if @compound =~/(\d+\.\d+)_(\d+\.\d+)n/
@@ -16,7 +15,7 @@
 <% if @idents.count == 0
      %><p>No identification data found</p>
     <% else %>
-<table><tr><th>Result-ID</th><th>Lipid</th><th>Lipid mass</th><th>Score</th><th>Frag. score</th><th>Mass error</th><th>Isotope sim.</th></tr>
+    <div class="container"><div class="col-sm-12 col-md-8 col-lg-6"><table class="table"><tr><th>Result-ID</th><th>Lipid</th><th>Lipid mass</th><th>Score</th><th>Frag. score</th><th>Mass error</th><th>Isotope sim.</th></tr>
   <% @idents.each do |compound|%>
       <tr>
         <td><%= link_to compound.compound_id, compound_path(compound) %></td>
@@ -29,15 +28,15 @@
       </tr>
 
   <% end %>
-</table>
+</table></div></div>
     <% end %>
 
 <h3>Feature quantification</h3>
 
 <%
    if not @quants.nil?
-%>
-    <table style="width:500px">
+%>  <div class="container"><div class="col-sm-12 col-md-8 col-lg-6">
+    <table class="table table-condensed">
       <tr><th>Sample</th><th>Raw value</th><th>Normalized value</th></tr>
       <%
          @quants.each do |key, values|
@@ -51,7 +50,7 @@
          end
       %>
 
-    </table>
+    </table></div> </div>
 <%
    else
 %>

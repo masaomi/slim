@@ -43,3 +43,4 @@ gem "kaminari"
 gem 'activerecord-import'
 gem 'nprogress-rails'
 gem 'passenger', '~> 5.0'
+gem 'bootstrap-sass', '~>3.3.5'

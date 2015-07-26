@@ -1,68 +1,41 @@
-<!-- <h1>SLIM <span style="color:gray;font-size:medium">Smart Limidomics Interactive Manager</span></h1> -->
-<%= image_tag('slim_logo.png') %>
-<table class="pages_presentation">
-  <tr>
-    <td></td>
-    <td class="page">
-      <h1><%= link_to 'All Lipids', '/lipids', :method => :get %></h1>
-      <p>
-        Total: <%= session['lipid_count'] %> lipids
-        <%= button_to 'Clear', '/lipids/delete_all' %>
-      </p>
-    </td>
-    <td class="page">
-      <h1><%= link_to 'Import lipid database', "/import_lipids" %></h1>
-      <p>
-        Import new lipid-data from a SDF-file (.sdf)
-      </p>
-    </td>
+<!-- <h3>SLIM <span style="color:gray;font-size:medium">Smart Limidomics Interactive Manager</span></h3> -->
+<br />
+<div class="container">
+  <div class="col-xs-12 col-sm-6 col-md-3"><%= image_tag('slim_logo.png') %></div>
+  <div class="col-xs-12 col-sm-6 col-md-3"></div>
+  <div class="col-xs-12 col-sm-6 col-md-3"></div>
+</div>
+<div class="container">
+  <div class="col-xs-12 col-sm-6 col-md-3"></div>
+  <div class="col-xs-12 col-sm-6 col-md-3"><p>
+    <%= link_to 'browse all lipids', '/lipids', :method => :get %><br />
+    total: <%= session['lipid_count'] %> lipids<br />
+    <%= button_to 'delete all lipids', '/lipids/delete_all' %>
+  </p></div>
+  <div class="col-xs-12 col-sm-6 col-md-3">
+    <p>
+      <%= link_to 'import lipid database (.sdf)', "/import_lipids" %>
+    </p></div>
+  <div class="col-xs-12 col-sm-6 col-md-3"></div>
 
-  </tr>
-  <tr>
-    <td>
-    </td>
-    <td class="page">
-      <h1><%= link_to 'Identifications', '/compounds', :method => :get %></h1>
-      <p>
-        Total: <%= session['compound_count'] %> compounds identified.
-        <%= button_to 'Clear', '/compounds/delete_all' %>
-      </p>
-    </td>
-    <td class="page">
-      <h1><%= link_to 'Import identifications', "/import_compounds" %></h1>
-      <p>
-        Import Progenesis Compound ID output (.csv)
-      </p>
-    </td>
-    <td class="page">
-      <h1><%= link_to 'Set Filtering', "/compounds/filter" %></h1>
-      <p>
-        Define Filtering order
-      </p>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <p>Find the sourcecode and the manual on <a href="https://github.com/masaomi/slim">Github</a></p>
-    </td>
-    <td class="page">
-      <h1><%= link_to 'Quantifications', '/quants' %></h1>
-      <p>
-        Total: <%= session['quant_count'] %> quantifications
-        <%= button_to 'Clear', '/quants/delete_all' %>
-      </p>
-    </td>
-    <td class="page">
-      <h1><%= link_to 'Import quantification', "/import_quants" %></h1>
-      <p>
-        Import Progenesis Compound quant output (.csv)
-      </p>
-    </td>
-    <td class="page">
-      <h1><%= link_to 'Get filtering output', "/compounds/filter_view" %></h1>
-      <p>
-       <%= button_to 'download as .csv', '/compounds/save_as_csv' %>
-      </p>
-    </td>
-  </tr>
-</table>
+</div>
+<div class="container">
+  <div class="col-xs-12 col-sm-6 col-md-3"></div>
+  <div class="col-xs-12 col-sm-6 col-md-3">
+    <p>
+      <%= link_to 'browse identification data', '/compounds', :method => :get %><br />
+      Total: <%= session['compound_count'] %>  identifications.
+      <%= button_to 'delete all identifications', '/compounds/delete_all' %>
+    </p></div>
+  <div class="col-xs-12 col-sm-6 col-md-3"><p><%= link_to 'import identifications', "/import_compounds" %><br />Import Progenesis Compound ID output (.csv)</p></div>
+  <div class="col-xs-12 col-sm-6 col-md-3"><p><%= link_to 'define filtering parameters', "/compounds/filter" %></p></div>
+
+</div>
+<div class="container">
+  <div class="col-xs-12 col-sm-6 col-md-3"><p>Find the sourcecode and the manual on <a href="https://github.com/masaomi/slim">Github</a></p></div>
+  <div class="col-xs-12 col-sm-6 col-md-3"><p><%= link_to 'browse quantification data', '/quants' %><br />total: <%= session['quant_count'] %> quantifications
+    <%= button_to 'delete all quantifications', '/quants/delete_all' %></p></div>
+  <div class="col-xs-12 col-sm-6 col-md-3"><p><%= link_to 'import quantification', "/import_quants" %><br />import Progenesis quantification output</p></div>
+  <div class="col-xs-12 col-sm-6 col-md-3"><p><%= link_to 'show filtered lipids', "/compounds/filter_view" %><br /><%= button_to 'download as .csv', '/compounds/save_as_csv' %></p></div>
+
+</div>

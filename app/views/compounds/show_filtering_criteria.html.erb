@@ -1,30 +1,31 @@
-<h3>Filtering criteria</h3>
-<table style="border: 1px solid #000; width: 350px">
-  <tr>
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Applied filtering criteria</h3></div>
+  <div class="panel-body">
+<div style="float:left"><table class="table table-condensed">
+  <tr class="bg-info">
     <th>absolute criterium</th>
     <th>minimal required value</th>
   </tr>
   <% ['score','fragmentation_score','isotope_similarity','mass_error','adducts'].each do |crit| %>
      <tr>
        <td><%=crit.gsub(/_/," ")%></td>
-       <td><%="%.4f"%@criteria.minimal[crit]%></td>
+       <td><%="%.2f"%@criteria.minimal[crit]%></td>
      </tr>
   <% end %>
-  <tr><th>relative criterium</th><th>priority</th></tr>
-  <% @criteria.relative.each_with_index do |crit, prio| %>
-  <tr>
-    <td><%=crit.to_s.gsub(/_/," ")%></td>
-    <td><%=prio+1%>.</td>
-  </tr>
-  <% end %>
-  <tr><th>oxidation chain</th><th><%= if @criteria.oxichain===false
-                                        'no'
-                                      else
-                                         if @criteria.oxichain.nil?
-                                           'yes'
-                                         else
-                                           'yes: %i parental lipids'%@criteria.oxichain.count
-                                         end
-                                      end %></th></tr>
-</table>
-<p><%=link_to 'Change filtering criteria', 'filter' %></p>
+
+</table></div><div style="float:left;margin-left: 10px"><table class="table table-condensed"><tr class="bg-info"><th>relative criterium</th><th>priority</th></tr>
+    <% @criteria.relative.each_with_index do |crit, prio| %>
+        <tr>
+          <td><%=crit.to_s.gsub(/_/," ")%></td>
+          <td><%=prio+1%>.</td>
+        </tr>
+    <% end %>
+    <tr class="bg-info"><th>oxidation chain</th><th><%= if @criteria.oxichain===false
+                                                          'no'
+                                                        else
+                                                          if @criteria.oxichain.nil?
+                                                            'yes'
+                                                          else
+                                                            'yes: %i parental lipids'%@criteria.oxichain.count
+                                                          end
+                                                        end %></th></tr></table></div></div><div class="panel-footer"><%=link_to 'Change filtering criteria', 'filter' %></div></div>
