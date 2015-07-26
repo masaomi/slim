@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'features' => 'features#index'
+
+  get 'features/show/:feature' => 'features#show', as: :feature, id: :number
+
   resources :categories
 
   resources :quants do
@@ -23,7 +27,6 @@ Rails.application.routes.draw do
       post :search_compounds
     end
   end
-  get 'feature/:feature' => 'compounds#feature',  as: :feature , feature: /\d+\.\d+_\d+\.\d+[\w\/%]+/
   resources :import_compounds, :only => [:index] do
     collection do
       post :import

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150726154957) do
+ActiveRecord::Schema.define(version: 20150726180658) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -95,6 +95,8 @@ ActiveRecord::Schema.define(version: 20150726154957) do
   end
 
   add_index "lipids", ["category_id"], name: "index_lipids_on_category_id", using: :btree
+  add_index "lipids", ["common_name"], name: "index_lipids_on_common_name", using: :btree
+  add_index "lipids", ["lm_id"], name: "index_lipids_on_lm_id", using: :btree
   add_index "lipids", ["pubchem_sid"], name: "index_lipids_on_pubchem_sid", using: :btree
   add_index "lipids", ["pubchem_sid"], name: "pubchem_sid", using: :btree
 

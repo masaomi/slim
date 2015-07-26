@@ -1,0 +1,28 @@
+<h1 class="page-header">Listing all features</h1>
+Total: <%= @features_count %> features (from <%= @start %> to <%= @end %>)
+<br />
+<%= paginate @features %>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Feature</th>
+    <th>m/z</th>
+    <th>Retention time</th>
+    <th># Identifications</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @features.each_with_index do |feature,i| %>
+      <tr>
+        <td><%= link_to feature.id_string, feature_path(feature) %></td>
+        <td><%= "%.4f"%feature.m_z %></td>
+        <td><%= "%.4f"%feature.rt %></td>
+        <td><%= @idents[feature.id] %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @features %>
+<br>

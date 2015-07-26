@@ -1,0 +1,39 @@
+<h1 class="page-header">Feature <%= @feature.id_string %></h1>
+<p>
+  <ul>
+    <li>Retention time: <%="%.4f"%@feature.rt%></li>
+    <li>m/z: <%="%02.6f"%@feature.m_z%></li>
+    <li>Charge: <%= @feature.charge.nil? ? 'n.a.' : @feature.charge%> </li>
+    <li>Neutral mass: <%= @feature.mass.nil? ? 'n.a.' : "%04.6f"%@feature.mass%></li>
+  </ul>
+</p>
+
+<h3>Feature identification</h3>
+    <div class="container"><div class="col-sm-12 col-md-8 col-lg-6"><table class="table"><tr><th>Lipid</th><th>Lipid mass</th><th>Score</th><th>Frag. score</th><th>Mass error</th><th>Isotope sim.</th><th>Adducts</th></tr>
+      <% @feature.identifications.each do |identification|%>
+          <tr>
+            <td><%= link_to identification.lipid.common_name, lipid_path(identification.lipid) %></td>
+            <td><%= "%03.6f"%identification.lipid.exact_mass.to_f %></td>
+            <td><%= identification.score.nil? ? 'n.a.' : "%02.1f"%identification.score %></td>
+            <td><%= identification.fragmentation_score.nil? ? 'n.a.' : "%02.1f"%identification.fragmentation_score %></td>
+            <td><%= identification.mass_error.nil? ? 'n.a.' : "%.4f"%identification.mass_error %></td>
+            <td><%= identification.isotope_similarity.nil? ? 'n.a.' : "%02.4f"%identification.isotope_similarity %></td>
+            <td><%= identification.adducts.nil? ? 'n.a.' : "%i"%identification.adducts %></td>
+          </tr>
+
+      <% end %>
+    </table></div></div>
+
+<h3>Feature quantification</h3>
+ <div class="container"><div class="col-sm-12 col-md-8 col-lg-6">
+  <table class="table table-condensed">
+    <tr><th>Sample</th><th>Raw value</th><th>Normalized value</th></tr>
+    <%
+       @feature.quantifications.each do |quant|
+         %>
+        <tr><td><%=quant.sample.nil? ? 'n.a.' : quant.sample.short%></td><td><%="%.0f"%quant.raw%></td><td><%="%.0f"%quant.norm%></td></tr>
+    <%
+       end
+    %>
+
+  </table></div> </div>
