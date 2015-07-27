@@ -1,4 +1,6 @@
 class FeaturesController < ApplicationController
+  include ActionController::Live
+
   def index
     @features_count = Feature.count
     @features = Feature.page params[:page]
@@ -22,9 +24,20 @@ class FeaturesController < ApplicationController
         @idents[id[0].to_i] += 1
       end
     end
+  end
 
+  def plot_2d
+  end
 
-
+  def load_features
+    response.headers['Content-Type'] = 'text/event-stream'
+    response.stream.write(": starting up stream\n\n")
+    Feature.all.each do |feature|
+      color = "#000088"
+      response.stream.write("data: {m_z:#{feature.m_z},rt:#{feature.rt},id:#{feature.id},color:'#{color}'}\n\n")
+    end
+  ensure
+    response.stream.close
   end
 
   def show

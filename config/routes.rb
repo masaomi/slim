@@ -12,10 +12,13 @@ Rails.application.routes.draw do
 
   get 'features' => 'features#index', as: :feature_index
   get 'features/show/:feature' => 'features#show', as: :feature, feature: :number
+  get 'features/load_features'
+  get 'features/plot_2d'
+
 
   resources :lipids do
     collection do
-      get 'search/:search', as: :search, action: :search
+      post 'search/:search', as: :search, action: :search
     end
   end
 
