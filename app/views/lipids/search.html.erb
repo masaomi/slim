@@ -1,21 +1,20 @@
-<h1 class="page-header">Listing lipids</h1>
-Total: <%= @lipids_count %> lipids (from <%= @start %> to <%= @end %>)
+<h1 class="page-header">Search results in lipids for <%=@search%></h1>
+Found <%= @lipids_count %> lipids matching result.
 <br />
-<%= paginate @lipids %>
 
 <table class="table table-striped">
   <thead>
-    <tr>
-      <th>Lipidmaps ID</th>
-      <th>Name</th>
-      <th>Category</th>
-      <th>Subcategory</th>
-      <th>Ox./Var.</th>
-    </tr>
+  <tr>
+    <th>Lipidmaps ID</th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>Subcategory</th>
+    <th>Ox./Var.</th>
+  </tr>
   </thead>
 
   <tbody>
-    <% @lipids.each do |lipid| %>
+  <% @lipids.each do |lipid| %>
       <tr>
         <td><%= link_to lipid.lm_id, lipid_path(lipid) %></td>
         <td><%= lipid.common_name %></td>
@@ -23,10 +22,6 @@ Total: <%= @lipids_count %> lipids (from <%= @start %> to <%= @end %>)
         <td><%= lipid.sub_class =~ /\[(.+)\]/ ? $1 : lipid.sub_class %></td>
         <td class="<%= lipid.oxidations>0 ? 'text-danger' : 'text-muted' %>"><%= lipid.oxidations %> / <%=lipid.oxvariant%></td>
       </tr>
-    <% end %>
+  <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= paginate @lipids %>

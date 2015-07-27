@@ -5,19 +5,16 @@
   <div class="panel-heading"><h3 class="panel-title">General info</h3></div>
   <div class="panel-body"><p>
   <strong>Lipidmaps-ID:</strong> <%= link_to @lipid.lm_id, @lipid.lipid_maps_cmpd_url,  :target=>"_blank" %><br />
-  <strong>Pubchem-ID:</strong> <%= link_to @lipid.pubchem_sid, @lipid.pubchem_substane_url, :target=>"_blank" %><br />
+  <strong>Pubchem-ID:</strong> <%= @lipid.parent!=@lipid.lm_id ? @lipid.pubchem_sid : link_to(@lipid.pubchem_sid, @lipid.pubchem_substane_url, target: 'blank') %><br />
   <strong>Systematic name:</strong> <%= @lipid.systematic_name %><br />
   <strong>Synonyms:</strong> <%= @lipid.synonyms %> <br />
 </p>
 <p class="text-danger"><strong>Oxidations:</strong> <%=@lipid.oxidations%><br />
   <strong>Oxidation variant:</strong> <%=@lipid.oxvariant%><br /></p>
-    <% unless @parent.nil? %>
-    <p>Parent lipid: <%= link_to @parent.common_name, @parent%></p>
-    <% end %>
     <% if @children.count %>
-    <strong>Oxidized variants:</strong><ul>
+    <strong>Variants of this lipid:</strong><ul>
     <% @children.each do |child| %>
-    <li><%=link_to child.common_name, child%></li>
+    <li><%=link_to child.common_name, child%><%= child.lm_id == child.parent ? ' (unoxidized parent)' : ''%></li>
     <% end %>
   </ul>
     <% end %>

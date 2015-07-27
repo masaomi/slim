@@ -4,12 +4,14 @@ Rails.application.routes.draw do
   get 'filter/list'
   get 'filter/csv'
   post 'filter/csv'
+  get 'filter/statistics'
 
   get 'features' => 'features#index', as: :feature_index
-  get 'features/show/:feature' => 'features#show', as: :feature, id: :number
+  get 'features/show/:feature' => 'features#show', as: :feature, feature: :number
 
   resources :lipids do
     collection do
+      get 'search/:search', as: :search, action: :search
     end
   end
 

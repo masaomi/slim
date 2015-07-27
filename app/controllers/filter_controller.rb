@@ -13,52 +13,6 @@ class FilterController < ApplicationController
       @criteria.oxichain! params['oxichain']
       @criteria.save session
     end
-
-    unless session['score_dist'] and session['frag_score_dist'] and session['iss_dist'] and session['adducts_size_dist']  and session['score_list'] and session['frag_score_list'] and session['iss_list'] and session['adducts_list'] and session['lipid_count'] and session['compound_count'] and session['quant_count']
-      score_list = []
-      frag_score_list = []
-      iss_list = []
-      adducts_list = []
-      category_list = []
-      Identifications.find_each do |comp|
-        #Compound.includes(:lipid).find_each do |comp|
-        score_list << comp.score
-        frag_score_list << comp.fragmentation_score
-        iss_list << comp.isotope_similarity
-        adducts_list << comp.adducts_size
-      end
-
-      score_dist = score_list.distribution
-      frag_score_dist = frag_score_list.distribution
-      iss_dist = iss_list.distribution
-      adducts_dist = adducts_list.distribution("integer")
-
-      # sort
-      #    @score_dist = Hash[*score_dist.sort_by{|key, value| key.first.to_f}.flatten]
-      #    @frag_score_dist = Hash[*frag_score_dist.sort_by{|key, value| key.first.to_f}.flatten]
-      #    @iss_dist = Hash[*iss_dist.sort_by{|key, value| key.first.to_f}.flatten]
-      #    @adducts_size_dist = Hash[*adducts_dist.sort_by{|key, value| key.first.to_f}.flatten]
-      #    @category_dist = Hash[*category_dist.sort_by{|key, value| key}.flatten]
-
-      session['score_dist'] = Hash[*score_dist.sort_by{|key, value| key.first.to_f}.flatten]
-      session['frag_score_dist'] = Hash[*frag_score_dist.sort_by{|key, value| key.first.to_f}.flatten]
-      session['iss_dist'] = Hash[*iss_dist.sort_by{|key, value| key.first.to_f}.flatten]
-      session['adducts_size_dist'] = Hash[*adducts_dist.sort_by{|key, value| key.first.to_f}.flatten]
-
-      session['score_list'] = [score_list.min, score_list.max, score_list.ave, score_list.sd]
-      session['frag_score_list'] = [frag_score_list.min, frag_score_list.max, frag_score_list.ave, frag_score_list.sd]
-      session['iss_list'] = [iss_list.min, iss_list.max, iss_list.ave, iss_list.sd]
-      session['adducts_list'] = [adducts_list.min, adducts_list.max, adducts_list.ave, adducts_list.sd]
-    end
-    @score_dist = session['score_dist']
-    @frag_score_dist = session['frag_score_dist']
-    @iss_dist = session['iss_dist']
-    @adducts_size_dist = session['adducts_size_dist']
-
-    @score_list = session['score_list']
-    @frag_score_list = session['frag_score_list']
-    @iss_list = session['iss_list']
-    @adducts_list = session['adducts_list']
   end
 
   def list
@@ -67,6 +21,41 @@ class FilterController < ApplicationController
     @samples = Sample.to_hash
     puts @samples
     @criteria.save(session)
+  end
+
+  def statistics
+    score_list = []
+    frag_score_list = []
+    iss_list = []
+    adducts_list = []
+    Identification.find_each do |ident|
+      score_list << ident.score
+      frag_score_list << ident.fragmentation_score
+      iss_list << ident.isotope_similarity
+      adducts_list << ident.adducts
+    end
+
+    score_dist = score_list.distribution
+    frag_score_dist = frag_score_list.distribution
+    iss_dist = iss_list.distribution
+    adducts_dist = adducts_list.distribution("integer")
+
+    # sort
+    @score_dist = Hash[*score_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    @frag_score_dist = Hash[*frag_score_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    @iss_dist = Hash[*iss_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    @adducts_size_dist = Hash[*adducts_dist.sort_by{|key, value| key.first.to_f}.flatten]
+
+    session['score_dist'] = Hash[*score_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    session['frag_score_dist'] = Hash[*frag_score_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    session['iss_dist'] = Hash[*iss_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    session['adducts_size_dist'] = Hash[*adducts_dist.sort_by{|key, value| key.first.to_f}.flatten]
+
+    @score_list = [score_list.min, score_list.max, score_list.ave, score_list.sd]
+    @frag_score_list = [frag_score_list.min, frag_score_list.max, frag_score_list.ave, frag_score_list.sd]
+    @iss_list = [iss_list.min, iss_list.max, iss_list.ave, iss_list.sd]
+    @adducts_list = [adducts_list.min, adducts_list.max, adducts_list.ave, adducts_list.sd]
+    render layout:false
   end
 
   def csv

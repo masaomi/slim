@@ -4,10 +4,6 @@ class LipidsController < ApplicationController
   # GET /lipids
   # GET /lipids.json
   def index
-    #@page_size = 50
-    #@pages = Lipid.all.length / @page_size
-    #@lipids = Lipid.all[0, @page_size]
-    #@lipids_count = Lipid.select("id").count
     @lipids_count = Lipid.count
     @lipids = Lipid.page params[:page]
     @page = params[:page]
@@ -23,12 +19,15 @@ class LipidsController < ApplicationController
            end
   end
 
+  def search
+    @lipids = Lipid.where('common_name LIKE ?','%%%s%%'%params[:search].downcase)
+    @lipids_count = @lipids.count
+    @search = params[:search]
+  end
+
   # GET /lipids/1
   # GET /lipids/1.json
   def show
-    if @lipid.parent != @lipid.lm_id
-      @parent = Lipid.where(lm_id: @lipid.parent).take
-    end
     @children = @lipid.children
   end
 

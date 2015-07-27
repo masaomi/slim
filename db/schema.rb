@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150726154345) do
+ActiveRecord::Schema.define(version: 20150727062817) do
 
   create_table "features", force: true do |t|
     t.float    "rt",         limit: 24
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20150726154345) do
 
   add_index "lipids", ["common_name"], name: "index_lipids_on_common_name", using: :btree
   add_index "lipids", ["lm_id"], name: "index_lipids_on_lm_id", using: :btree
+  add_index "lipids", ["parent"], name: "index_lipids_on_parent", using: :btree
   add_index "lipids", ["pubchem_sid"], name: "index_lipids_on_pubchem_sid", using: :btree
 
   create_table "quantifications", force: true do |t|
