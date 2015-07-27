@@ -1,7 +1,10 @@
 json.array!(@results) do |identification|
   json.id identification.id
+  json.identification do
+    json.extract! identification, :score, :fragmentation_score, :isotope_similarity, :mass_error, :adducts
+  end
   json.lipid do
-    json.extract! identification.lipid, :id, :common_name, :category_, :main_class, :sub_class, :oxidations
+    json.extract! identification.lipid, :id, :common_name, :category_, :main_class, :sub_class, :oxidations, :lm_id
   end
   json.feature do
     json.extract! identification.feature, :id, :id_string, :m_z, :rt

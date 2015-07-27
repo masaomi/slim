@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+
 heatmap = (value, min, max) ->
   r = (value-min)/(max-min)
   if r<0.5
@@ -10,33 +11,12 @@ heatmap = (value, min, max) ->
   else
     d = Math.floor(255+255*(0.5-r))
     'rgb(255,'+d+','+d+')'
-export_csv = (data) ->
-  csv = ''
-  header = ['feature',
-            'retention_time',
-            'lipid',
-            'common_name',
-            'oxidations',
-            'score',
-            'fragmentation_score',
-            'mass_error',
-            'isotope_similarity',
-            'category',
-            'cat1',
-            'cat2',
-            'cat3',
-            'n_identifications']
-  csv += header.join(',')+"\n"
-  for row in data
-    a = []
 
-  u = encodeURI('data:text/csv;charset=utf-8;filename=results.csv,\n'+csv)
 $(document).ready ->
   norm = false
   results = []
   sorting_criterium = 'n_ids'
   draw_row = () ->
-    console.log('Drawing row '+this.data.id, norm )
     this.empty()
     this.append('<td><a href="'+this.data.feature_url.url+'">'+this.data.feature.id_string+'</a></td>')
     this.append('<td><a href="'+this.data.lipid_url.url+'">'+this.data.lipid.common_name+'</a></td>')
@@ -60,6 +40,47 @@ $(document).ready ->
         this.append($("<td />", html:Math.floor(i) ).css('background-color',heatmap(i,mi,ma)))
       else
         this.append($("<td />", html:Math.floor(i) ).css('background-color',heatmap(i,mi,ma)))
+  export_csv = () ->
+    csv = ''
+    header = ['feature',
+              'retention_time',
+              'm/z',
+              'lipid',
+              'common_name',
+              'oxidations',
+              'score',
+              'fragmentation_score',
+              'mass_error',
+              'isotope_similarity',
+              'category',
+              'main_class',
+              'sub_class',
+              'n_identifications']
+    csv += header.join(',')+($('#sample_names').html())+"\n"
+    for row in results
+      d = row.data
+      r = []
+      r.push d.feature.id_string
+      r.push d.feature.rt
+      r.push d.feature.m_z
+      r.push d.lipid.common_name
+      r.push d.lipid.lm_id
+      r.push d.lipid.oxidations
+      r.push d.identification.score
+      r.push d.identification.fragmentation_score
+      r.push d.identification.mass_error
+      r.push d.identification.isotope_similarity
+      r.push d.lipid.category_
+      r.push d.lipid.main_class
+      r.push d.lipid.sub_class
+      r.push d.n_ids
+      for i in [0..d.values.length/2-1]
+        r.push d.values[i*2]
+      for i in [0..d.values.length/2-1]
+        r.push d.values[i*2+1]
+      csv += r.join(',')+"\n"
+    window.open(encodeURI('data:application/csv;charset=utf-8;filename=results.csv,'+csv))
+
 
   if $( "#results" ).length
     $.ajax 'get_list.json', success: (data) ->
@@ -145,6 +166,9 @@ $(document).ready ->
           row.detach()
           row.draw_row()
           $("#results").append(row)
+      )
+      $("#info").append $('<button />', text: 'download as csv').click((e) ->
+        export_csv()
       )
     $('.values_norm').hide()
   if $("#statistics").length

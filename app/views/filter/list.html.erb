@@ -1,10 +1,6 @@
 <h1>Results of feature filtering</h1>
 <hr />
 <%=render file: 'filter/show_filtering_criteria'%>
-
-<%= form_tag(:controller => 'filter',:action => 'csv') do %>
-    <%= button_to 'Export as csv','csv' %>
-<% end %>
 <div id="info"></div>
 <hr />
 <table class="table table-condensed table-striped">
@@ -37,3 +33,4 @@
     </div>
   </div>
 </div>
+<div class="hidden" id="sample_names"><% @samples.each do |id, name| %>,<%=name%>_raw<% end %><% @samples.each do |id, name| %>,<%=name%>_norm<% end %></div>
