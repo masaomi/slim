@@ -23,6 +23,7 @@ class FilterController < ApplicationController
   def get_list
     criteria = FilteringCriteria.new session
     @results = filteredIdentifications(criteria)
+    #@results = [Identification.find(7284)]
     criteria.save(session)
     render layout:false
   end
