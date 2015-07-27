@@ -1,6 +1,6 @@
 <h1>Results of feature filtering</h1>
 <hr />
-<%=render file: 'compounds/show_filtering_criteria'%>
+<%=render file: 'filter/show_filtering_criteria'%>
 
 <p class="text-warning">filtered <%= @results.length %> lipids (<%="%02.1f"%(100*@results.length/Feature.count) %>%) out of  <%= Feature.count %> identifications.</p>
 <%= form_tag(:controller => 'filter',:action => 'csv') do %>

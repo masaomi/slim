@@ -84,7 +84,7 @@ class FilterController < ApplicationController
       'n_identifications'
     ]
     csv_headers = Array.new(feature_description)
-    csv_headers.concat(samples.keys.map{|sample| Sample.load(sample).short}.map{|header| "#{header}_raw"}).concat(samples.keys.map{|header| "#{header}_norm"})
+    csv_headers.concat(samples.keys.map{|sample| Sample.find(sample).short}.map{|header| "#{header}_raw"}).concat(samples.keys.map{|sample| Sample.find(sample).short}.map{|header| "#{header}_norm"})
     csv_string = CSV.generate do |out|
       out << csv_headers
       identifications.each do |identification|
