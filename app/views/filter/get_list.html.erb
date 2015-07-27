@@ -1,0 +1,17 @@
+<% @results.each do |identification| %>
+    <tr>
+      <td><%= link_to identification.feature.id_string, feature_path(identification.feature) %></td>
+      <td><%= link_to identification.lipid.common_name, lipid_path(identification.lipid) %></td>
+      <td><%= Identification.where(feature: identification.feature).count %></td>
+      <% norm = []
+         identification.feature.quants.each do |id, value|
+           norm << "%.0f"%value[1]
+      %>
+          <td><%="%.0f"%value[0]%></td>
+      <% end
+         norm.each do |value|
+      %>
+          <td><%=value%></td>
+      <% end %>
+    </tr>
+<%end%>

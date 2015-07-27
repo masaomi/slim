@@ -35,19 +35,7 @@
   </div>
 </div>
 </div>
-<script>
-    function load_statistics()
-    {
-        $.ajax({
-            type: "GET",
-            url: '<%=filter_statistics_path%>',
-            success: function(data) {
-                $('#statistics').html(data);
-            }
-        });
-    }
-load_statistics()
-</script>
+
 
 
 

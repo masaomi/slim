@@ -16,11 +16,15 @@ class FilterController < ApplicationController
   end
 
   def list
-    @criteria = FilteringCriteria.new(session)
-    @results = filteredIdentifications(@criteria)
+    @criteria = FilteringCriteria.new session
     @samples = Sample.to_hash
-    puts @samples
-    @criteria.save(session)
+  end
+
+  def get_list
+    criteria = FilteringCriteria.new session
+    @results = filteredIdentifications(criteria)
+    criteria.save(session)
+    render layout:false
   end
 
   def statistics

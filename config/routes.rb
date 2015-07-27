@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
+  get 'import/experiment'
+  get 'import/importlog'
+
   get 'filter/edit'
   post 'filter/edit'
   get 'filter/list'
   get 'filter/csv'
   post 'filter/csv'
   get 'filter/statistics'
+  get 'filter/get_list'
 
   get 'features' => 'features#index', as: :feature_index
   get 'features/show/:feature' => 'features#show', as: :feature, feature: :number
