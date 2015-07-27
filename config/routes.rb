@@ -5,50 +5,11 @@ Rails.application.routes.draw do
   get 'filter/csv'
   post 'filter/csv'
 
-  get 'features' => 'features#index'
-
+  get 'features' => 'features#index', as: :feature_index
   get 'features/show/:feature' => 'features#show', as: :feature, id: :number
-
-  resources :categories
-
-  resources :quants do
-    collection do
-      post :delete_all
-    end
-  end
-
-  resources :import_quants, :only => [:index] do
-    collection do
-      post :import
-    end
-  end
-
-  resources :compounds do
-    collection do
-      get :filter
-      post :filter
-      get :filter_view
-      post :save_as_csv
-      post :delete_all
-      post :search_compounds
-    end
-  end
-  resources :import_compounds, :only => [:index] do
-    collection do
-      post :import
-    end
-  end
 
   resources :lipids do
     collection do
-      post :delete_all
-    end
-  end
-
-  resources :import_lipids, :only => [:index] do
-    collection do
-      post :import
-      post :delete_all
     end
   end
 

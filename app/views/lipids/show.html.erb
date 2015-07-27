@@ -14,10 +14,18 @@
     <% unless @parent.nil? %>
     <p>Parent lipid: <%= link_to @parent.common_name, @parent%></p>
     <% end %>
+    <% if @children.count %>
+    <strong>Oxidized variants:</strong><ul>
+    <% @children.each do |child| %>
+    <li><%=link_to child.common_name, child%></li>
+    <% end %>
+  </ul>
+    <% end %>
 </div></div>
 <div class="panel panel-default">
   <div class="panel-heading"><h3 class="panel-title">Categorization</h3></div>
   <div class="panel-body"><p>
+    <strong>Category:</strong> <%= @lipid.category_ %><br />
   <strong>Main class:</strong> <%= @lipid.main_class %><br />
   <strong>Sub class:</strong> <%= @lipid.sub_class %><br />
   <strong>Pubchem cid:</strong>
@@ -74,5 +82,3 @@
 
     viewerCanvas.loadMolecule(lipid);
 </script>           <br />
-<%= link_to 'Edit this lipid', edit_lipid_path(@lipid) %> |
-<%= link_to 'Back to lipid list', lipids_path %>

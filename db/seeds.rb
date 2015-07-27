@@ -6,9 +6,10 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-require 'csv'
+require 'rake'
+#Rake::Task['import:sdf'].invoke()   # <-- do this manually!
 
-
+=begin
 #sdf_path = "/srv/GT/analysis/masaomi/slim/proto-slim2-dev/sample_data/pc_oxidized.sdf"
 sdf_path =  true ? "sample_data/LARGE_LM_oxidized.sdf" : "sample_data/pc_oxidized.sdf"
 #compound_csv_path = "/srv/GT/analysis/masaomi/slim/proto-slim2-dev/sample_data/COMPOUND_IDs_small.csv"
@@ -31,3 +32,4 @@ t0 = Time.now
 
 
 puts "Time: #{"%.2f" % (Time.now - t0)} [s]"
+=end

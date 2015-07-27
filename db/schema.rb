@@ -11,36 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150726180658) do
-
-  create_table "categories", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "compounds", force: true do |t|
-    t.string   "compound"
-    t.string   "compound_id"
-    t.string   "adducts"
-    t.float    "score",               limit: 24
-    t.float    "fragmentation_score", limit: 24
-    t.float    "mass_error",          limit: 24
-    t.float    "isotope_similarity",  limit: 24
-    t.float    "retention_time",      limit: 24
-    t.string   "link"
-    t.string   "description"
-    t.integer  "quant_id"
-    t.integer  "lipid_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "sid"
-    t.integer  "adducts_size"
-  end
-
-  add_index "compounds", ["compound"], name: "index_compounds_on_compound", using: :btree
-  add_index "compounds", ["lipid_id"], name: "index_compounds_on_lipid_id", using: :btree
-  add_index "compounds", ["quant_id"], name: "index_compounds_on_quant_id", using: :btree
+ActiveRecord::Schema.define(version: 20150726154345) do
 
   create_table "features", force: true do |t|
     t.float    "rt",         limit: 24
@@ -62,9 +33,9 @@ ActiveRecord::Schema.define(version: 20150726180658) do
     t.float    "isotope_similarity",  limit: 24
     t.integer  "adducts"
     t.integer  "priority"
+    t.float    "mass_error",          limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "mass_error",          limit: 24
   end
 
   create_table "lipids", force: true do |t|
@@ -72,8 +43,8 @@ ActiveRecord::Schema.define(version: 20150726180658) do
     t.string   "pubchem_substane_url"
     t.string   "lipid_maps_cmpd_url"
     t.string   "common_name"
-    t.text     "systematic_name",      limit: 2147483647
-    t.text     "synonyms",             limit: 2147483647
+    t.string   "systematic_name",      limit: 512
+    t.string   "synonyms",             limit: 1024
     t.string   "category_"
     t.string   "main_class"
     t.string   "sub_class"
@@ -85,33 +56,23 @@ ActiveRecord::Schema.define(version: 20150726180658) do
     t.string   "chebi_id"
     t.string   "inchi_key"
     t.string   "status"
-    t.integer  "category_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.text     "molfile"
     t.integer  "oxidations"
     t.integer  "oxvariant"
     t.string   "parent"
-    t.text     "molfile",              limit: 2147483647
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "lipids", ["category_id"], name: "index_lipids_on_category_id", using: :btree
   add_index "lipids", ["common_name"], name: "index_lipids_on_common_name", using: :btree
   add_index "lipids", ["lm_id"], name: "index_lipids_on_lm_id", using: :btree
   add_index "lipids", ["pubchem_sid"], name: "index_lipids_on_pubchem_sid", using: :btree
-  add_index "lipids", ["pubchem_sid"], name: "pubchem_sid", using: :btree
 
   create_table "quantifications", force: true do |t|
     t.integer  "feature_id"
     t.integer  "sample_id"
     t.float    "norm",       limit: 24
     t.float    "raw",        limit: 24
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "quants", force: true do |t|
-    t.string   "compound"
-    t.text     "samples",    limit: 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
   end

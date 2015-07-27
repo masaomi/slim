@@ -5,7 +5,6 @@ module ImportLipidsHelper
     count = 0
     lipids = []
     first_line = true
-    category_names = {}
     molfile = ""
     File.foreach(path).each do |line|
       if first_line
@@ -56,7 +55,6 @@ module ImportLipidsHelper
         lipid.common_name = data['COMMON_NAME']
         lipid.synonyms = data['SYNONYMS']
         lipid.category_ = data['CATEGORY']
-        category_names[data['CATEGORY']] = true
         lipid.main_class = data['MAIN_CLASS']
         lipid.sub_class = data['SUB_CLASS']
         lipid.exact_mass = data['EXACT_MASS']
@@ -75,24 +73,6 @@ module ImportLipidsHelper
       end
     end
     Lipid.import lipids
-
-    categories = []
-    category_names.keys.each do |category_name|
-      category = Category.new
-      category.name = category_name
-      categories << category
-    end
-    Category.import categories
-    name2category = {}
-    Category.find_each do |category|
-      name2category[category.name] = category
-    end
-    Lipid.find_each do |lipid|
-      if category = name2category[lipid.category_]
-        category.lipids << lipid
-      end
-    end
-
-    return("#{count} lipids imported, #{categories.length} categories imported" )
+    return("#{count} lipids imported" )
   end
 end

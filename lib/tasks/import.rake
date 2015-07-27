@@ -51,23 +51,23 @@ namespace :import do
     include ImportQuantificationsHelper
     require 'csv'
     file = ENV['quant']
-    file ||= 'sample_data/COMPOUND_quantities.csv'
-    puts '#{"%.2f" % (Time.now - t0)}s    importing quantification file %s'%file
+    file ||= 'sample_data/COMPOUND_quantities_short.csv'
+    puts "#{"%.2f" % (Time.now - t0)}s    importing quantification file #{file}"
     puts '    ... deleting old quantifications, samples and features, this may take a while'
     Quantification.delete_all
     Sample.delete_all
     Feature.delete_all
-    puts '#{"%.2f" % (Time.now - t0)}s    deleted old quantification data'
+    puts "#{"%.2f" % (Time.now - t0)}s    deleted old quantification data"
     puts importQuantifications(file)
-    puts '#{"%.2f" % (Time.now - t0)}s    --- COMPLETED quantification import, now starting identifications import'
+    puts "#{"%.2f" % (Time.now - t0)}s    --- COMPLETED quantification import, now starting identifications import"
     include ImportIdentificationsHelper
     file = ENV['id']
-    file ||= 'sample_data/COMPOUND_IDs.csv'
+    file ||= 'sample_data/COMPOUND_IDs_short.csv'
     puts '    importing identifications file %s'%file
     Identification.delete_all
-    puts '#{"%.2f" % (Time.now - t0)}s    deleted old identification data'
+    puts "#{"%.2f" % (Time.now - t0)}s    deleted old identification data"
     puts importIdentifications(file)
-    puts '#{"%.2f" % (Time.now - t0)}s    now deleting all features and quantifications without identification, this may take a while...'
+    puts "#{"%.2f" % (Time.now - t0)}s    now deleting all features and quantifications without identification, this may take a while..."
     ActiveRecord::Base.connection.execute('DELETE FROM features WHERE id NOT IN (SELECT distinct(feature_id) FROM identifications)')
     ActiveRecord::Base.connection.execute('DELETE FROM quantifications WHERE feature_id NOT IN (SELECT id FROM features)')
     puts "    completed task in  #{"%.2f" % (Time.now - t0)}s"

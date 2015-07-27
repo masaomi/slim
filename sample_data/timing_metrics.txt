@@ -1,0 +1,16 @@
+Timing 2015-07-27 / Jeremy Deuel
+on MacBook Pro (Retina 15 inch early 2013) using a 2.4GHz Intel Core i7 and 16GB of Memory
+
+rake import:sdf file=sample_data/LARGE_LM_oxidized.sdf
+Lipids: 263,006
+seconds: 434.02 => 606 lipids/second
+total importing time: 434.02s = 7min 14s
+
+rake import:experiment id=sample_data/LARGE_HDL_id.csv quant=sample_data/LARGE_HDL_quant.csv
+Features: 10,917
+seconds: 131.79  => 83 features / second
+Identifications: 173,953
+seconds: 472.19s (340.40s for this step) => 511 identifications / second
+deleting unused features and quantifications (2 mysql-statements)
+seconds: 883.30s (411.10s)
+total importing time:  883.30s = 14min 43s

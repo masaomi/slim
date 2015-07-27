@@ -8,6 +8,7 @@ class CreateIdentifications < ActiveRecord::Migration
       t.float :isotope_similarity
       t.integer :adducts
       t.integer :priority
+      t.float :mass_error
 
       t.timestamps
     end

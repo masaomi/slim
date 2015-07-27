@@ -11,4 +11,3 @@ class CreateFeatures < ActiveRecord::Migration
     end
   end
 end
-      r
