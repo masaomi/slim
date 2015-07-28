@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get 'features/show/:feature' => 'features#show', as: :feature, feature: :number
   get 'features/load_features'
   get 'features/plot_2d'
+  get 'features/oxichain'
+  get 'features/oxichain_find'
 
 
   resources :lipids do

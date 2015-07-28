@@ -37,3 +37,13 @@
     %>
 
   </table></div> </div>
+<% oxichain = @feature.get_oxichain
+   unless oxichain.nil?
+%>
+    <h3>Oxichain</h3>
+    <ul>
+      <% oxichain.each do |f| %>
+          <li><%= link_to f.id_string, feature_path(f)%></li>
+      <% end %>
+    </ul>
+<% end %>

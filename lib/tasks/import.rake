@@ -67,9 +67,9 @@ namespace :import do
     Identification.delete_all
     puts "#{"%.2f" % (Time.now - t0)}s    deleted old identification data"
     puts importIdentifications(file)
-    puts "#{"%.2f" % (Time.now - t0)}s    now deleting all features and quantifications without identification, this may take a while..."
-    ActiveRecord::Base.connection.execute('DELETE FROM features WHERE id NOT IN (SELECT distinct(feature_id) FROM identifications)')
-    ActiveRecord::Base.connection.execute('DELETE FROM quantifications WHERE feature_id NOT IN (SELECT id FROM features)')
+    #puts "#{"%.2f" % (Time.now - t0)}s    now deleting all features and quantifications without identification, this may take a while..."
+    #ActiveRecord::Base.connection.execute('DELETE FROM features WHERE id NOT IN (SELECT distinct(feature_id) FROM identifications)')
+    #ActiveRecord::Base.connection.execute('DELETE FROM quantifications WHERE feature_id NOT IN (SELECT id FROM features)')
     puts "    completed task in  #{"%.2f" % (Time.now - t0)}s"
   end
 

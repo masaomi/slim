@@ -1,6 +1,6 @@
 <!-- <h3>SLIM <span style="color:gray;font-size:medium">Smart Limidomics Interactive Manager</span></h3> -->
 
-<%= image_tag('slim_logo.png') %>
+<%= image_tag('slim_logo.png', size: '273x166') %>
 <h3>Usage</h3>
 <div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Import Lipid-Database</h3></div><div class="panel-body">
   <pre>bundle exec rake import:sdf file=[PATH_TO_SDF_FILE]
@@ -10,4 +10,10 @@
 <div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Import Experiment</h3></div><div class="panel-body">
   <pre>bundle exec rake import:experiment id=[PATH_TO_ID_FILE] quant=[PATH_TO_QUANT_FILE]
   </pre>
+</div></div>
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Processing</h3></div><div class="panel-body">
+<ul>
+      <li><%= link_to 'Find oxichains', '/features/oxichain' %></li>  </ul>
+    </div>
 </div>

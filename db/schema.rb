@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150727062817) do
+ActiveRecord::Schema.define(version: 20150728081608) do
 
   create_table "features", force: true do |t|
     t.float    "rt",         limit: 24
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20150727062817) do
     t.string   "id_string"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "oxichain"
   end
 
   add_index "features", ["id_string"], name: "index_features_on_id_string", using: :btree

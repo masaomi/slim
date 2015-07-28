@@ -65,9 +65,36 @@ getTransformation = (canvas,width,height) ->
     return [20+x*sw,canvas.scrollHeight-y*sh-20]
 
 $(document).ready ->
+  if $('#oxichain-log').length #oxichaining
+    log = $('#oxichain-log')
+    log.hide()
+    $('#button-container').append($('<button />', text: 'Start oxichaining search', id: 'oxichain_start').click((e) ->
+      log.show()
+      e.target.remove()
+      source = new EventSource 'oxichain_find'
+      log.html($('<image />',{url:'/assets/ajax-loader.gif',id:'loader'}))
+      log.append('Starting oxichain search, this may take a while. Do not close this window!...\n')
+      source.onmessage = (e) ->
+        log.append(e.data+'\n')
+      source.onerror = (e) ->
+        source.close()
+        $('#loader').remove()
+      ))
   if $('#log').length   #2d-plot
+    #optimize for retina display
+    if window.devicePixelRatio? && window.devicePixelRatio > 1
+      devicePixelRatio = window.devicePixelRatio
+      canvas = $('#plot')
+      canvasWidth = canvas.attr 'width'
+      canvasHeight = canvas.attr 'height'
+      canvas.css 'width', canvasWidth+'px'
+      canvas.css 'height', canvasHeight+'px'
+      canvas.attr 'width', canvasWidth*devicePixelRatio
+      canvas.attr 'height', canvasHeight*devicePixelRatio
+      canvas[0].getContext('2d').scale(devicePixelRatio,devicePixelRatio)
     i = 0
     features = []
+    oxichains = {}
     df = null
     old_feature = null
     ctx = $('#plot')[0].getContext('2d')
@@ -132,15 +159,33 @@ $(document).ready ->
     df = draw_feature(ctx,t)
     source = new EventSource 'load_features'
     $('#log').html('Connecting to server')
+    oxichains = {}
     source.onmessage = (e) ->
       i += 1
-      e = eval('['+e.data+']')
+      e = eval(e.data)
       e = e[0]
       [x,y] = df(e.m_z,e.rt,e.id,e.color)
       $('#log').html('Loaded feature '+i+', continuing...')
-      features.push {x: x, y:y, mz:e.m_z,rt:e.rt, id:e.id,color:e.color}
+      features.push {x: x, y:y, mz:e.m_z,rt:e.rt, id:e.id,color:e.color,oxichain:e.oxichain}
+      if e.oxichain?
+        oxichains[e.oxichain] = [] unless oxichains[e.oxichain]?
+        oxichains[e.oxichain].push {x:x,y:y}
     source.onerror = (e) ->
       source.close()
       $('#log').html('Finished loading '+i+' features.')
+      #now draw oxichains
+      console.log(oxichains)
+      for k,i of oxichains
+        console.log('Drawing oxichain',k,'with array',i)
+        ctx.beginPath()
+        ctx.strokeStyle="#008800"
+        start = true
+        for f in i
+          if start
+            ctx.moveTo(f.x,f.y)
+            start = false
+          else
+            ctx.lineTo(f.x,f.y)
+        ctx.stroke()
     source.onstart = (e) ->
       $('#log').html('Connected to server')

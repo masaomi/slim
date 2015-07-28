@@ -9,4 +9,8 @@ class Feature < ActiveRecord::Base
     end
     return quant
   end
+  def get_oxichain
+    return nil unless self.oxichain?
+    self.class.where(oxichain: self.oxichain).order(m_z: :asc)
+  end
 end
