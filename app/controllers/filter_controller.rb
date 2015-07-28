@@ -25,6 +25,13 @@ class FilterController < ApplicationController
     @results = filteredIdentifications(criteria)
     #@results = [Identification.find(7284)]
     criteria.save(session)
+    oxichains = {}
+    features = {}
+    @results.each do |id|
+       oxichains[id.feature.oxichain] = true
+       features[id.feature.id] = true
+    end
+    @oxifeatures = Feature.where(oxichain: oxichains.keys).where.not(id: features.keys)
     render layout:false
   end
 
@@ -33,33 +40,40 @@ class FilterController < ApplicationController
     frag_score_list = []
     iss_list = []
     adducts_list = []
+    mass_error_list = []
     Identification.find_each do |ident|
       score_list << ident.score
       frag_score_list << ident.fragmentation_score
       iss_list << ident.isotope_similarity
       adducts_list << ident.adducts
+      mass_error_list << ident.mass_error
     end
 
     score_dist = score_list.distribution
     frag_score_dist = frag_score_list.distribution
     iss_dist = iss_list.distribution
     adducts_dist = adducts_list.distribution("integer")
+    mass_error_dist = mass_error_list.distribution()
 
     # sort
     @score_dist = Hash[*score_dist.sort_by{|key, value| key.first.to_f}.flatten]
     @frag_score_dist = Hash[*frag_score_dist.sort_by{|key, value| key.first.to_f}.flatten]
     @iss_dist = Hash[*iss_dist.sort_by{|key, value| key.first.to_f}.flatten]
     @adducts_size_dist = Hash[*adducts_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    @mass_error_dist = Hash[*mass_error_dist.sort_by{|key, value| key.first.to_f}.flatten]
 
-    session['score_dist'] = Hash[*score_dist.sort_by{|key, value| key.first.to_f}.flatten]
-    session['frag_score_dist'] = Hash[*frag_score_dist.sort_by{|key, value| key.first.to_f}.flatten]
-    session['iss_dist'] = Hash[*iss_dist.sort_by{|key, value| key.first.to_f}.flatten]
-    session['adducts_size_dist'] = Hash[*adducts_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    #session['score_dist'] = Hash[*score_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    #session['frag_score_dist'] = Hash[*frag_score_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    #session['iss_dist'] = Hash[*iss_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    #session['adducts_size_dist'] = Hash[*adducts_dist.sort_by{|key, value| key.first.to_f}.flatten]
+    #session['mass_error_dist'] = Hash[*mass_error_dist.sort_by{|key, value| key.first.to_f}.flatten]
 
     @score_list = [score_list.min, score_list.max, score_list.ave, score_list.sd]
     @frag_score_list = [frag_score_list.min, frag_score_list.max, frag_score_list.ave, frag_score_list.sd]
     @iss_list = [iss_list.min, iss_list.max, iss_list.ave, iss_list.sd]
     @adducts_list = [adducts_list.min, adducts_list.max, adducts_list.ave, adducts_list.sd]
+    @mass_error_list = [mass_error_list.min, mass_error_list.max, mass_error_list.ave, mass_error_list.sd]
+
     render layout:false
   end
 
