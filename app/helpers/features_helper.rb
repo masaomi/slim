@@ -1,6 +1,6 @@
 module FeaturesHelper
   def search_oxidated(feature)
-    min_mass, max_mass = feature.m_z + 15.994915 - 0.0022, feature.m_z + 15.994915 + 0.0022
+    min_mass, max_mass = feature.m_z + 15.994915 - 0.0006417872, feature.m_z + 15.994915 + 0.0006417872
     expected_mass = feature.m_z + 15.994915
     #min_rt, max_rt = feature.rt - 5, feature.rt - 0.01
     min_rt, max_rt = feature.rt*(0.44+0.07*Math.log(feature.m_z)), feature.rt*(0.72+0.04*Math.log(feature.m_z))
