@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150728081608) do
+ActiveRecord::Schema.define(version: 20150729114124) do
 
   create_table "features", force: true do |t|
-    t.float    "rt",         limit: 24
-    t.float    "m_z",        limit: 24
-    t.float    "mass",       limit: 24
+    t.decimal  "rt",         precision: 12, scale: 9
+    t.decimal  "m_z",        precision: 15, scale: 10
+    t.decimal  "mass",       precision: 15, scale: 10
     t.integer  "charge"
     t.string   "id_string"
     t.datetime "created_at"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20150728081608) do
     t.string   "parent"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "oxichain"
   end
 
   add_index "lipids", ["common_name"], name: "index_lipids_on_common_name", using: :btree

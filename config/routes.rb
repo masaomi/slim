@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'features/plot_2d'
   get 'features/oxichain'
   get 'features/oxichain_find'
+  get 'features/oxichain_export'
 
 
   resources :lipids do
