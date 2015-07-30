@@ -1,47 +1,27 @@
 Rails.application.routes.draw do
-  resources :categories
+  get 'import/experiment'
+  get 'import/importlog'
 
-  resources :quants do
-    collection do
-      post :delete_all
-    end
-  end
+  get 'filter/edit'
+  post 'filter/edit'
+  get 'filter/list'
+  get 'filter/csv'
+  post 'filter/csv'
+  get 'filter/statistics'
+  get 'filter/get_list'
 
-  resources :import_quants, :only => [:index] do
-    collection do
-      post :import
-    end
-  end
+  get 'features' => 'features#index', as: :feature_index
+  get 'features/show/:feature' => 'features#show', as: :feature, feature: :number
+  get 'features/load_features'
+  get 'features/plot_2d'
+  get 'features/oxichain'
+  get 'features/oxichain_find'
+  get 'features/oxichain_export'
 
-  resources :compounds do
-    collection do
-      get :filter
-      post :relative_filter
-      post :relative_filter_reset
-      post :save_relative_filter
-      post :filter_view
-      post :delete_all
-      post :save_as_csv
-      post :search_compounds
-    end
-  end
-
-  resources :import_compounds, :only => [:index] do
-    collection do
-      post :import
-    end
-  end
 
   resources :lipids do
     collection do
-      post :delete_all
-    end
-  end
-
-  resources :import_lipids, :only => [:index] do
-    collection do
-      post :import
-      post :delete_all
+      post 'search/:search', as: :search, action: :search
     end
   end
 

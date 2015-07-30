@@ -1,0 +1,68 @@
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Score distribution</h3></div>
+  <div class="panel-body">
+
+    <%= column_chart @score_dist,
+                     :library => {
+                             :hAxis => {:title => "Score Distribution"}
+                     }
+    %>
+  </div><div class="panel-footer"><% if @score_list %>
+      range: <%= @score_list[0] %> - <%= @score_list[1] %>, ave: <%= "%.1f" % @score_list[2] %>, sd: <%= "%.1f" % @score_list[3] %><br \>
+  <% end %></div></div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Fragmentation score distribution</h3></div>
+  <div class="panel-body">
+
+    <%= column_chart @frag_score_dist,
+                     :library => {
+                             :hAxis => {:title => "Frag. Score Distribution"}
+                     }
+    %>
+  </div><div class="panel-footer"><% if @frag_score_list %>
+      range: <%= @frag_score_list[0] %> - <%= @frag_score_list[1] %>, ave: <%= "%.1f" % @frag_score_list[2] %>, sd: <%= "%.1f" % @frag_score_list[3] %><br \>
+  <% end %></div></div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Isotope similarity score distribution</h3></div>
+  <div class="panel-body">
+
+
+    <%= column_chart @iss_dist,
+                     :library => {
+                             :hAxis => {:title => "ISS Distribution"}
+                     }
+    %>
+  </div><div class="panel-footer"><% if @iss_list %>
+      range: <%= @iss_list[0] %> - <%= @iss_list[1] %>, ave: <%= "%.1f" % @iss_list[2] %>, sd: <%= "%.1f" % @iss_list[3] %><br \>
+  <% end %></div></div>
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Mass error distribution</h3></div>
+  <div class="panel-body">
+    <%= column_chart @mass_error_dist,
+                     :library => {
+                             :hAxis => {:title => "Mass Error Distribution"}
+                     }
+    %>
+  </div><div class="panel-footer"><% if @adducts_list %>
+      range: <%= @adducts_list[0] %> - <%= @adducts_list[1] %>, ave: <%= "%.1f" % @adducts_list[2] %>, sd: <%= "%.1f" % @adducts_list[3] %><br \>
+  <% end %>
+</div></div>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Number of adducts distribution</h3></div>
+  <div class="panel-body">
+    <%= column_chart @adducts_size_dist,
+                     :library => {
+                             :hAxis => {:title => "Adducts Size Distribution"}
+                     }
+    %>
+  </div><div class="panel-footer"><% if @adducts_list %>
+      range: <%= @adducts_list[0] %> - <%= @adducts_list[1] %>, ave: <%= "%.1f" % @adducts_list[2] %>, sd: <%= "%.1f" % @adducts_list[3] %><br \>
+  <% end %>
+</div></div>
+
+

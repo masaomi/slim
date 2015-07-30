@@ -1,0 +1,42 @@
+<p><%=@error%></p>
+<h1 class="page-header">Define filtering settings</h1>
+
+<%= form_tag(:action => 'edit') do %>
+    <table style="width:700px"><tr><td>
+      <table style="width:350px">
+        <tr>
+          <th>Minimal Score</th><td><%= text_field "minimal", 'score', :size=>15, :value=>@criteria.minimal['score'] %></td>
+        </tr><tr>
+        <th>Minimal Frag. Score</th><td><%= text_field "minimal", 'fragmentation_score', :size=>15, :value=>@criteria.minimal['fragmentation_score'] %></td>
+      </tr><tr>
+        <th>Minimal ISS</th><td><%= text_field "minimal", 'isotope_similarity', :size=>15, :value=>@criteria.minimal['isotope_similarity'] %></td>
+      </tr><tr>
+        <th>Minimal # of Adducts</th><td><%= text_field "minimal", 'adducts', :size=>15, :value=>@criteria.minimal['adducts'] %></td>
+      </tr>
+      </table></td><td>
+
+      <p><strong>Relative filtering order</strong><br />
+        <% @criteria.relative.each_with_index  do |criterium, priority|%>
+            <%=text_field 'relative', criterium, size: 2, value:priority+1%>. <%=criterium.gsub(/_/," ")%><br />
+        <% end %>
+      </p>
+      <p>  Oxidation-chaining: <%= check_box('oxichain', 'flag', {:checked=>@criteria.oxichain != false}, true, false) %>
+      </p>
+    </td></tr></table>
+    <%= submit_tag 'Save Filtering' %>
+<% end %>
+<br /><p><%= link_to 'Apply filtering','/filter/list'%> (you have to save first!).</p><br />
+<div id="statistics">
+<div class="panel panel-warning">
+  <div class="panel-body">
+    <div class="container">
+      <div class="span7 offset5 centered"><%= image_tag('ajax-loader.gif') %><br />loading statistics...</div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
