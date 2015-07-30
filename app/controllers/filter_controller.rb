@@ -21,17 +21,22 @@ class FilterController < ApplicationController
   end
 
   def get_list
-    criteria = FilteringCriteria.new session
-    @results = filteredIdentifications(criteria)
-    #@results = [Identification.find(7284)]
-    criteria.save(session)
-    oxichains = {}
+    @criteria = FilteringCriteria.new session
+    @results = filteredIdentifications(@criteria)
+    #@results = [Identification.find(383093),Identification.find(384995),Identification.find(382925)]
+    @criteria.save(session)
+    @oxichains = {}
     features = {}
     @results.each do |id|
-       oxichains[id.feature.oxichain] = true
+       @oxichains[id.feature.oxichain] = id.lipid.parent
        features[id.feature.id] = true
     end
-    @oxifeatures = Feature.where(oxichain: oxichains.keys).where.not(id: features.keys)
+    unless @criteria.oxichain==false
+      @oxifeatures = Feature.includes(:identifications, :quantifications).where(oxichain: @oxichains.keys).where.not(id: features.keys).where ('oxichain IS NOT NULL')
+    else
+      @oxifeatures = []
+    end
+
     render layout:false
   end
 

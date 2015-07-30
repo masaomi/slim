@@ -89,7 +89,7 @@ class FeaturesController < ApplicationController
       oxichain_members = []
       #must only search upwards since features are ordered by mz.
       current_oxidized_feature = search_oxidated feature
-      unless current_oxidized_feature.nil?
+      until current_oxidized_feature.nil?
         oxichain_members << current_oxidized_feature
         current_oxidized_feature = search_oxidated current_oxidized_feature
       end

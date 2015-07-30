@@ -34,13 +34,80 @@ module FilterHelper
     end
   end
 
+  def bestIdentificationFor feature, crit, oxichains
+    parent = oxichains[feature.oxichain]
+    return nil if parent.nil?
+    identifications = []
+    Identification.where(feature: feature).where('lipid_id in (SELECT id FROM lipids WHERE parent=?)',parent).find_each do |ident|
+      identifications << ident
+    end
+    if identifications.length < 1
+      return nil
+    end
+    if identifications.length == 1
+      return identifications[0]
+    end
+    crit.relative.reverse_each do |criterium|
+      case criterium
+        when 'score'
+          identifications.sort! {|a,b| if a.score > b.score
+                                         1  #b follows a
+                                       elsif b.score > a.score
+                                         -1 #a follows b
+                                       else
+                                         0 # a and b are equivalent
+                                       end
+          }
+        when 'fragmentation_score'
+          identifications.sort! {|a,b| if a.fragmentation_score > b.fragmentation_score
+                                         1  #b follows a
+                                       elsif b.fragmentation_score > a.fragmentation_score
+                                         -1 #a follows b
+                                       else
+                                         0 # a and b are equivalent
+                                       end
+          }
+        when 'isotope_similarity'
+          identifications.sort! {|a,b| if a.isotope_similarity > b.isotope_similarity
+                                         1  #b follows a
+                                       elsif b.isotope_similarity > a.isotope_similarity
+                                         -1 #a follows b
+                                       else
+                                         0 # a and b are equivalent
+                                       end
+          }
+        when 'mass_error'
+          identifications.sort! {|a,b| if a.mass_error > b.mass_error
+                                         1  #b follows a
+                                       elsif b.mass_error > a.mass_error
+                                         -1 #a follows b
+                                       else
+                                         0 # a and b are equivalent
+                                       end
+          }
+        when 'adducts'
+          identifications.sort! {|a,b| if a.adducts > b.adducts
+                                         1  #b follows a
+                                       elsif b.adducts > a.adducts
+                                         -1 #a follows b
+                                       else
+                                         0 # a and b are equivalent
+                                       end
+          }
+        else
+          raise StandardError, 'Tried to sort by parameter %s, but this parameter does not exist.'%criterium
+      end
+    end
+    return identifications.first
+  end
+
 
   def filteredIdentifications(crit)
     # step 1: absolute filtering
       features = {}
-      Identification.where("score >= ? and fragmentation_score >= ? and isotope_similarity >= ? and adducts >= ? and mass_error >= ?",
+      Identification.includes(:feature).includes(:lipid).where("score >= ? and fragmentation_score >= ? and isotope_similarity >= ? and adducts >= ? and mass_error >= ?",
                    crit.minimal['score'],crit.minimal['fragmentation_score'], crit.minimal['isotope_similarity'],
-                   crit.minimal['adducts'], crit.minimal['mass_error']).each do |ident|
+                   crit.minimal['adducts'], crit.minimal['mass_error']).find_each do |ident|
         features[ident.feature.id] ||= []
         features[ident.feature.id] << ident
       end
