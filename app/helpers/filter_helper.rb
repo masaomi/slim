@@ -104,13 +104,13 @@ module FilterHelper
 
   def filteredIdentifications(crit)
     # step 1: absolute filtering
-      features = {}
-      Identification.includes(:feature).includes(:lipid).where("score >= ? and fragmentation_score >= ? and isotope_similarity >= ? and adducts >= ? and mass_error >= ?",
-                   crit.minimal['score'],crit.minimal['fragmentation_score'], crit.minimal['isotope_similarity'],
-                   crit.minimal['adducts'], crit.minimal['mass_error']).find_each do |ident|
-        features[ident.feature.id] ||= []
-        features[ident.feature.id] << ident
-      end
+    features = {}
+    Identification.includes(:feature).includes(:lipid).where("score >= ? and fragmentation_score >= ? and isotope_similarity >= ? and adducts >= ? and mass_error >= ?",
+                 crit.minimal['score'],crit.minimal['fragmentation_score'], crit.minimal['isotope_similarity'],
+                 crit.minimal['adducts'], crit.minimal['mass_error']).find_each do |ident|
+      features[ident.feature.id] ||= []
+      features[ident.feature.id] << ident
+    end
 
 
     # step 2: relative filtering
@@ -168,39 +168,9 @@ module FilterHelper
             raise StandardError, 'Tried to sort by parameter %s, but this parameter does not exist.'%criterium
         end
       end
-
-      #fourth step: oxichaining
-      if not crit.oxichain.nil? and crit.oxichain.count
-        identifications.sort! {|a,b| if crit.oxichain.include? a.lipid.parent
-                                 if crit.oxichain.include? b.lipid.parent
-                                   0
-                                 else
-                                   1
-                                 end
-                               else
-                                 if crit.oxichain.include? b.lipid.parent
-                                   -1
-                                 else
-                                   0
-                                 end
-                               end}
-      end
-
       output << identifications.first
-      if crit.oxichain.nil?
-        # third step: generate oxichaining library
-        library << identifications.first.lipid.parent
-      end
     end
-    if crit.oxichain.nil?
-      crit.oxichain = library.uniq!
-      if crit.oxichain.nil?
-        crit.oxichain = []
-      end
-      return filteredIdentifications(crit)
-    else
-      return output
-    end
+    return output
   end
 end
 
